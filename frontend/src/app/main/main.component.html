@@ -1,9 +1,19 @@
 <div class="container-fluid mt-4">
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-md-7 col-lg-8 col-xl-9">
       <app-search-bar class="mb-4" (search)="onSearch($event)"></app-search-bar>
       <mat-card>
         <app-map></app-map>
+      </mat-card>
+    </div>
+    <div class="col-md-5 col-lg-4 col-xl-3">
+      <mat-card class="h-100">
+        <mat-tab-group animationDuration="300ms">
+          <mat-tab label="Parkings">
+          </mat-tab>
+          <mat-tab label="Véhicules">
+          </mat-tab>
+        </mat-tab-group>
       </mat-card>
     </div>
   </div>

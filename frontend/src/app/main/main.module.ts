@@ -9,6 +9,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import {FormsModule} from "@angular/forms";
+import {MatTabsModule} from "@angular/material/tabs";
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import {FormsModule} from "@angular/forms";
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatTabsModule
   ]
 })
 export class MainModule { }
