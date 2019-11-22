@@ -1,19 +1,17 @@
 <div class="container-fluid mt-4">
   <div class="row">
-    <div class="col-md-7 col-lg-8 col-xl-9">
-      <app-search-bar class="mb-4" (search)="onSearch($event)"></app-search-bar>
-      <mat-card>
-        <app-map></app-map>
-      </mat-card>
-    </div>
     <div class="col-md-5 col-lg-4 col-xl-3">
       <mat-card class="h-100">
-        <mat-tab-group animationDuration="300ms">
-          <mat-tab label="Parkings">
-          </mat-tab>
-          <mat-tab label="Véhicules">
-          </mat-tab>
-        </mat-tab-group>
+        <h3 class="w-100" id="results">Parkings</h3>
+      </mat-card>
+    </div>
+    <div class="col-md-7 col-lg-8 col-xl-9">
+      <div class="row">
+        <app-search-bar class="mb-4 col-8" (search)="onSearch($event)"></app-search-bar>
+        <app-vehicle-selection class="col-4"></app-vehicle-selection>
+      </div>
+      <mat-card>
+        <app-map></app-map>
       </mat-card>
     </div>
   </div>

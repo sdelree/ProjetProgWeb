@@ -10,10 +10,12 @@ import {MatInputModule} from "@angular/material/input";
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import {FormsModule} from "@angular/forms";
 import {MatTabsModule} from "@angular/material/tabs";
+import { VehicleSelectionComponent } from './vehicle-selection/vehicle-selection.component';
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
-  declarations: [MapComponent, MainComponent, SearchBarComponent],
+  declarations: [MapComponent, MainComponent, SearchBarComponent, VehicleSelectionComponent],
   imports: [
     CommonModule,
     MainRoutingModule,
@@ -21,7 +23,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSelectModule
   ]
 })
 export class MainModule { }

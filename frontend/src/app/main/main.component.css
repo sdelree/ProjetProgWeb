@@ -2,3 +2,7 @@ app-map {
   height: 32rem;
   display: block;
 }
+
+#results {
+  text-align: center;
+}
