@@ -1,8 +1,8 @@
-app-map {
-  height: 32rem;
-  display: block;
-}
-
 #results {
   text-align: center;
+}
+
+#control-panel {
+  position: relative;
+  z-index: 500;
 }
