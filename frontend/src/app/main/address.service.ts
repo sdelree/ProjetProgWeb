@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 const url = 'https://api-adresse.data.gouv.fr/search/';
+const defaultParams = new HttpParams().set('lat', '44.836').set('lon', '-0.582');
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AddressService {
 
   getMatchingAddress(toMatch: string): Observable<Address[]> {
     const options = {
-      params: new HttpParams().set('q', toMatch)
+      params: defaultParams.set('q', toMatch)
     };
     return this.http.get<AddressList>(url, options).pipe(
       map(addressList => addressList.features)
