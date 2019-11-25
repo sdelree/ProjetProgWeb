@@ -1,5 +1,11 @@
 <form (submit)="onValidatedSearch($event)">
   <mat-form-field class="w-100">
-    <input [(ngModel)]="value" name="search" matInput type="text" placeholder="Recherchez une destination">
+    <input [(ngModel)]="value" name="search" (input)="onInput()" [matAutocomplete]="autocomplete"
+           matInput type="text" placeholder="Recherchez une destination">
+    <mat-autocomplete #autocomplete>
+      <mat-option *ngFor="let address of autoCompleteAddresses" [value]="address.properties.label">
+        <span>{{address.properties.label}}</span>
+      </mat-option>
+    </mat-autocomplete>
   </mat-form-field>
 </form>

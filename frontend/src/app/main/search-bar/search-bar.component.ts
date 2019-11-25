@@ -1,4 +1,5 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Address} from '../address.model';
 
 @Component({
   selector: 'app-search-bar',
@@ -7,7 +8,9 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class SearchBarComponent implements OnInit {
   @Output() search: EventEmitter<string> = new EventEmitter();
-  value: string = '';
+  @Output() inputChange: EventEmitter<string> = new EventEmitter();
+  value = '';
+  @Input() autoCompleteAddresses: Address[];
 
   constructor() { }
 
@@ -17,6 +20,10 @@ export class SearchBarComponent implements OnInit {
   onValidatedSearch(event: Event) {
     event.preventDefault();
     this.search.emit(this.value);
+  }
+
+  onInput() {
+    this.inputChange.emit(this.value);
   }
 
 }
