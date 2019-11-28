@@ -1,0 +1,293 @@
+openapi: 3.0.1
+info:
+  title: WhereToPark Backend API
+  description: 'The REST API that enables the WhereToPark frontend and backend apps to communicate.'
+  version: 0.1.0
+tags:
+  - name: parkings
+    description: Information about Bordeaux\'s parkings
+  - name: vehicles
+    description: Details about vehicles saved on the backend
+  - name: sessions
+    description: An identifier to use to use data on the backend and retrieve them
+paths:
+  /sessions:
+    get:
+      tags:
+        - sessions
+      summary: Get a new session id.
+      description: The session id returned by this route should be stored for further access to backend-stored data.
+      operationId: getNewSessionId
+      responses:
+        200:
+          description: A new session id has been Successfully generated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/SessionId'
+  /parkings:
+    get:
+      tags:
+        - parkings
+      summary: Get a list of parkings along with their information
+      description: This route can be used to get a list of parkings. The number of parkings returned can be limited by a query parameter.
+      operationId: getParkings
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of parkings that are to be returned.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Parking'
+        400:
+          description: Invalid limit value
+          content: {}
+  /vehicles:
+    get:
+      tags:
+        - vehicles
+      summary: Get a list of the vehicles in a session.
+      description: This route can be used to get a list of the vehicles created in the session provided as a query parameter.
+      operationId: getVehicles
+      parameters:
+        - name: sessionId
+          in: query
+          description: The session id of the user.
+          required: true
+          style: form
+          explode: true
+          schema:
+            $ref: '#/components/schemas/SessionId'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehicle'
+        404:
+          description: Invalid session id
+          content: {}
+    post:
+      tags:
+        - vehicles
+      summary: Add a new vehicle in a session.
+      description: This route can be used to add a new vehicle to the session provided as a query parameter.
+      operationId: addVehicle
+      parameters:
+        - name: sessionId
+          in: query
+          description: The session id of the user.
+          required: true
+          style: form
+          explode: true
+          schema:
+            $ref: '#/components/schemas/SessionId'
+      responses:
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        401:
+          description: The session id is not valid
+          content: {}
+  /vehicles/{vehicleId}:
+    get:
+      tags:
+        - vehicles
+      summary: Get a vehicle in a session.
+      description: This route can be used to retrieve a specific vehicle in the session provided as a query parameter.
+      operationId: getVehicle
+      parameters:
+        - name: sessionId
+          in: query
+          description: The session id of the user.
+          required: true
+          style: form
+          explode: true
+          schema:
+            $ref: '#/components/schemas/SessionId'
+        - name: vehicleId
+          in: path
+          description: The id of the vehicle to retrieve.
+          required: true
+          schema:
+            $ref: '#/components/schemas/ResourceId'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        401:
+          description: The session id is not valid.
+          content: {}
+        404:
+          description: The vehicle does not exist in the provided session.
+          content: {}
+    put:
+      tags:
+        - vehicles
+      summary: Update a vehicle in a session.
+      description: This route can be used to update a vehicle in the session provided as a query parameter.
+      operationId: updateVehicle
+      parameters:
+        - name: sessionId
+          in: query
+          description: The session id of the user.
+          required: true
+          style: form
+          explode: true
+          schema:
+            $ref: '#/components/schemas/SessionId'
+        - name: vehicleId
+          in: path
+          description: The id of the vehicle to update.
+          required: true
+          schema:
+            $ref: '#/components/schemas/ResourceId'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        401:
+          description: The session id is not valid.
+          content: {}
+    delete:
+      tags:
+        - vehicles
+      summary: Delete a vehicle from a session.
+      description: This route can be used to delete a vehicle from the session provided as a query parameter.
+      operationId: removeVehicle
+      parameters:
+        - name: sessionId
+          in: query
+          description: The session id of the user.
+          required: true
+          style: form
+          explode: true
+          schema:
+            $ref: '#/components/schemas/SessionId'
+        - name: vehicleId
+          in: path
+          description: The id of the vehicle to delete.
+          required: true
+          schema:
+            $ref: '#/components/schemas/ResourceId'
+      responses:
+        204:
+          description: Successful operation
+          content: {}
+        401:
+          description: The session id is not valid.
+          content: {}
+components:
+  schemas:
+    Parking:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ResourceId'
+        name:
+          type: string
+          format: int64
+        prices:
+          $ref: '#/components/schemas/ParkingPrices'
+        location:
+          $ref: '#/components/schemas/Coordinates'
+        places:
+          $ref: '#/components/schemas/ParkingPlaces'
+        state:
+          type: string
+          enum:
+            - full
+            - free
+        freePlaces:
+          type: integer
+          format: int64
+        maxVehicleHeight:
+          type: number
+          format: float
+    ParkingPrices:
+      type: object
+      properties:
+        fifteenMinutes:
+          type: number
+          format: float
+        halfAnHour:
+          type: number
+          format: float
+        oneHour:
+          type: number
+          format: float
+        twoHours:
+          type: number
+          format: float
+        threeHours:
+          type: number
+          format: float
+        fourHours:
+          type: number
+          format: float
+        tenHours:
+          type: number
+          format: float
+        twentyFourHours:
+          type: number
+          format: float
+        night:
+          type: number
+          format: float
+    ParkingPlaces:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int64
+        electric:
+          type: integer
+          format: int64
+    Coordinates:
+      type: array
+      minItems: 2
+      maxItems: 2
+      items:
+        type: number
+    Vehicle:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ResourceId'
+        isElectic:
+          type: boolean
+        height:
+          type: number
+          format: float
+    ResourceId:
+      type: integer
+      format: int64
+    SessionId:
+      type: integer
+      format: int64
