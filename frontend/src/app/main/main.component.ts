@@ -3,6 +3,7 @@ import {AddressService} from './address.service';
 import {Observable, Subject} from 'rxjs';
 import {Address} from './address.model';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
+import { MapMarker } from "./map/map.model";
 
 const autoCompleteDebounceTime = 200;
 
@@ -13,6 +14,7 @@ const autoCompleteDebounceTime = 200;
 })
 export class MainComponent implements OnInit {
   autoComplete$: Observable<Address[]>;
+  mapMarkers: MapMarker[] = [];
 
   private autoCompleteRequested$: Subject<string> = new Subject();
 
@@ -29,7 +31,12 @@ export class MainComponent implements OnInit {
   }
 
   onSearch(value: string) {
-    this.addressService.getMatchingAddress(value).subscribe(addresses => console.log(addresses));
+    this.addressService.getAddress(value).subscribe(
+      address => this.mapMarkers = [{
+        coordinates: address.geometry.coordinates,
+        popupMessage: address.properties.name
+      }]
+    );
   }
 
   onAutoComplete(value: string) {
