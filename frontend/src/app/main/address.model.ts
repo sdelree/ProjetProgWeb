@@ -17,7 +17,7 @@ export interface AddressProperties {
 
 export interface AddressGeometry {
   type: string;
-  coordinates: number[];
+  coordinates: [number, number];
 }
 
 export interface Address {

@@ -26,4 +26,14 @@ export class AddressService {
       map(addressList => addressList.features)
     );
   }
+
+  getAddress(name: string): Observable<Address> {
+    const options = {
+      params: defaultParams.set('q', name).set('limit', '1')
+    };
+    return this.http.get<AddressList>(url, options).pipe(
+      retry(numberOfTries),
+      map(addressList => addressList.features.length === 1 ? addressList.features[0] : null)
+    );
+  }
 }
