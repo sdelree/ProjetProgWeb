@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {AddressService} from './address.service';
-import {Observable, Subject} from 'rxjs';
-import {Address} from './address.model';
-import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import { MapMarker } from "./map/map.model";
+import { AddressService } from './address.service';
+import { Observable, Subject } from 'rxjs';
+import { Address } from './address.model';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { MapMarker } from './map/map.model';
 
 const autoCompleteDebounceTime = 200;
 

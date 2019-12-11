@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Address} from '../address.model';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Address } from '../address.model';
 
 @Component({
   selector: 'app-search-bar',

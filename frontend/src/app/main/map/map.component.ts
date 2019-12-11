@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import { LatLngTuple, Marker } from "leaflet";
-import { MapMarker } from "./map.model";
+import { LatLngTuple, Marker } from 'leaflet';
+import { MapMarker } from './map.model';
 
 @Component({
   selector: 'app-map',
@@ -12,7 +12,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   @Input() set markers(markers: MapMarker[]) {
     this.clearMarkers();
     if (markers) {
-      for (let marker of markers) {
+      for (const marker of markers) {
         this.addMarker(marker);
       }
     }
@@ -43,7 +43,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   private clearMarkers(): void {
-    for(let marker of this._markers) {
+    for (const marker of this._markers) {
       marker.remove();
     }
     this._markers = [];
