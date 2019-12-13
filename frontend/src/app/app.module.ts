@@ -8,6 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { MatToolbarModule } from '@angular/material';
 import { MainModule } from './main/main.module';
 import { HttpClientModule } from '@angular/common/http';
+import { AccountModule } from './account/account.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     MatToolbarModule,
     MainModule,
+    AccountModule,
     AppRoutingModule,
     HttpClientModule
   ],
