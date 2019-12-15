@@ -12,4 +12,13 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  public getHelloMessage() {
+    const date = new Date();
+    if (date.getHours() < 17) {
+      return 'Bonjour';
+    } else {
+      return 'Bonsoir';
+    }
+  }
+
 }
