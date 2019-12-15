@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
-import { MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatToolbarModule } from '@angular/material';
 import { MainModule } from './main/main.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AccountModule } from './account/account.module';
@@ -15,15 +15,16 @@ import { AccountModule } from './account/account.module';
     AppComponent,
     HeaderComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MainModule,
-    AccountModule,
-    AppRoutingModule,
-    HttpClientModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MainModule,
+        AccountModule,
+        AppRoutingModule,
+        HttpClientModule,
+        MatButtonModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
