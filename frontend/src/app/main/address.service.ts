@@ -23,7 +23,8 @@ export class AddressService {
     };
     return this.http.get<AddressList>(url, options).pipe(
       retry(numberOfTries),
-      map(addressList => addressList.features)
+      map(addressList => addressList.features),
+      map(addressList => addressList.map(address => this.adaptAddressData(address)))
     );
   }
 
@@ -33,7 +34,29 @@ export class AddressService {
     };
     return this.http.get<AddressList>(url, options).pipe(
       retry(numberOfTries),
-      map(addressList => addressList.features.length === 1 ? addressList.features[0] : null)
+      map(addressList => addressList.features.length === 1 ? addressList.features[0] : null),
+      map(address => this.adaptAddressData(address))
     );
+  }
+
+  /**
+   * Inverts received coordinates from cartesian (x,y) to geographical (lat,lng).
+   */
+  private mapCoordinatesToLatLng(coordinates: [number, number]): [number, number] {
+    return [coordinates[1], coordinates[0]];
+  }
+
+  /**
+   * Apply modifications on received addresses to make it usable by the rest of the app.
+   */
+  private adaptAddressData(address: Address): Address {
+    return {
+      ...address,
+      geometry:
+        {...address.geometry,
+          coordinates:
+            this.mapCoordinatesToLatLng(address.geometry.coordinates)
+        }
+    };
   }
 }

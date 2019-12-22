@@ -36,7 +36,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   private addMarker(marker: MapMarker): void {
-    const layer = L.marker([marker.coordinates[1], marker.coordinates[0]])
+    const layer = L.marker(marker.coordinates)
       .addTo(this.map)
       .bindPopup(marker.popupMessage);
     this._markers.push(layer);
