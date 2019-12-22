@@ -6,7 +6,3 @@
 img {
   height: 80%;
 }
-
-a[routerLink="/login"]{
-  margin-left: 50em;
-}

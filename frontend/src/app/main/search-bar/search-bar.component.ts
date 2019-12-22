@@ -17,8 +17,7 @@ export class SearchBarComponent implements OnInit {
   ngOnInit() {
   }
 
-  onValidatedSearch(event: Event) {
-    event.preventDefault();
+  onValidatedSearch() {
     this.search.emit(this.value);
   }
 

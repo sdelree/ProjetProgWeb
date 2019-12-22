@@ -1,8 +1,8 @@
-<form (submit)="onValidatedSearch($event)">
+<form (submit)="$event.preventDefault(); onValidatedSearch()">
   <mat-form-field class="w-100">
     <input [(ngModel)]="value" name="search" (input)="onInput()" [matAutocomplete]="autocomplete"
            matInput type="text" placeholder="Recherchez une destination">
-    <mat-autocomplete #autocomplete (optionSelected)="onInput()">
+    <mat-autocomplete #autocomplete (optionSelected)="onInput(); onValidatedSearch();">
       <mat-option *ngFor="let address of autoCompleteAddresses" [value]="address.properties.label">
         <span>{{address.properties.label}}</span>
       </mat-option>
