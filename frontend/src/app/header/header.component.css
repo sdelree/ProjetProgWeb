@@ -1,8 +1,15 @@
 #header {
   z-index: 1000;
   position: relative;
+  height: auto;
 }
 
 img {
-  height: 80%;
+  height: 48px;
+}
+
+@media (max-width: 575px) {
+  #logo-container {
+    width: 100%;
+  }
 }

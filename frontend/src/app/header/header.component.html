@@ -1,11 +1,13 @@
-<mat-toolbar id="header" class="mat-elevation-z6" color="primary">
-  <a class="h-100 d-flex align-items-center" routerLink="/">
-    <img src="/assets/wheretopark.png" class="mx-auto mx-md-0" alt="logo">
+<mat-toolbar id="header" class="mat-elevation-z6 flex-wrap" color="primary">
+  <a id="logo-container" class="h-100 d-flex align-items-center" routerLink="/">
+    <img src="/assets/wheretopark.png" class="mx-auto mx-sm-0 my-1" alt="logo">
   </a>
-  <a class="ml-auto mr-1" routerLink="/login">
-    <button mat-raised-button color="secondary">Connexion</button>
-  </a>
-  <a class="ml-1" routerLink="/register">
-    <button mat-raised-button color="secondary">Inscription</button>
-  </a>
+  <span class="mx-auto mr-sm-0 my-2">
+    <a class="mr-1" routerLink="/login">
+      <button mat-raised-button color="secondary">Connexion</button>
+    </a>
+    <a class="ml-1" routerLink="/register">
+      <button mat-raised-button color="secondary">Inscription</button>
+    </a>
+  </span>
 </mat-toolbar>

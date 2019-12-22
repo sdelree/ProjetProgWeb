@@ -1,6 +1,6 @@
 <div class="container-fluid h-100">
   <div class="row no-gutters h-100">
-    <div class="col-md-5 col-lg-4 col-xl-3">
+    <div class="col-md-5 col-lg-4 col-xl-3 order-12 order-md-0">
       <mat-card id="control-panel" class="h-100 mat-elevation-z5">
         <app-search-bar class="mb-4 w-100" (search)="onSearch($event)" (inputChange)="onAutoComplete($event)"
         [autoCompleteAddresses]="autoComplete$ | async"></app-search-bar>
