@@ -10,13 +10,13 @@ RUN npm install
 
 RUN node ./node_modules/@angular/cli/bin/ng build --prod
 
-FROM nginx:lastest
+FROM nginx:latest
 
 RUN mkdir /app
 
 WORKDIR /app
 
-COPY --from=builder /build/dist /app
+COPY --from=builder /build/dist/wheretopark /app
 
 COPY docker/nginx.template.conf /tmp/nginx.template.conf
 

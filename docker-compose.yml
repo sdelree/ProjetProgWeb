@@ -1,12 +1,12 @@
 version: '3.7'
 services:
   back:
-   build: ./backend/
+    build: ./backend/
     ports:
       - '3000:3000'
   front:
     build: ./frontend/
     environment:
-      - BACKEND_URL=http://back
+      - BACKEND_URL=http://back:3000
     ports:
       - '80:80'
