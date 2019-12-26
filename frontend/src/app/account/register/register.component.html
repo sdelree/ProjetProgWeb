@@ -1,20 +1,20 @@
 <div class="container">
   <div class="row">
-    <form class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
       <h2>{{getHelloMessage()}}, vous pouvez créer votre compte ici</h2>
       <mat-form-field class="w-100" id="firstfield">
         <label for="mail"></label>
-        <input matInput placeholder="E-mail" id="mail">
+        <input matInput formControlName="email" placeholder="E-mail" id="mail">
       </mat-form-field>
       <mat-form-field class="w-100">
         <label for="password"></label>
-        <input matInput placeholder="Mot de passe" id="password">
+        <input matInput formControlName="password" placeholder="Mot de passe" id="password">
       </mat-form-field>
       <mat-form-field class="w-100">
-        <label for="passwordconf"></label>
-        <input matInput placeholder="Confirmez votre mot de passe" id="passwordconf">
+        <label for="confirmPassword"></label>
+        <input matInput formControlName="confirmPassword" placeholder="Confirmez votre mot de passe" id="confirmPassword">
       </mat-form-field>
-      <button mat-raised-button color="primary">Créer mon compte</button>
+      <button mat-raised-button color="primary" [disabled]="!form.valid">Créer mon compte</button>
     </form>
   </div>
 </div>
