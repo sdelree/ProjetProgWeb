@@ -26,7 +26,7 @@ import { environment } from "../environments/environment";
     AccountModule,
     AppRoutingModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryApiService, {host: environment.backendUrl, apiBase: '/'}),
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryApiService, {host: environment.backendUrl, apiBase: '/', passThruUnknownUrl: true}),
     MatButtonModule
   ],
   providers: [],
