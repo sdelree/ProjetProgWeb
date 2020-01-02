@@ -3,7 +3,7 @@ import { AddressService } from './address.service';
 import { Observable, Subject } from 'rxjs';
 import { Address } from './address.model';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { MapMarker } from './map/map.model';
+import { MapIconType, MapMarker } from './map/map.model';
 
 const autoCompleteDebounceTime = 200;
 
@@ -32,10 +32,11 @@ export class MainComponent implements OnInit {
 
   onSearch(value: string) {
     this.addressService.getAddress(value).subscribe(
-      address => this.mapMarkers = [{
+      address => this.mapMarkers = this.mapMarkers.concat([{
         coordinates: address.geometry.coordinates,
-        popupMessage: address.properties.name
-      }]
+        popupMessage: `Votre destination : ${address.properties.name}`,
+        iconType: MapIconType.GREEN
+      }])
     );
   }
 

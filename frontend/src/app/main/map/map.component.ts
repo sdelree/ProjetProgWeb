@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { LatLngTuple, Marker } from 'leaflet';
-import { MapMarker } from './map.model';
+import { MapIconType, MapMarker } from './map.model';
 
 @Component({
   selector: 'app-map',
@@ -11,10 +11,12 @@ import { MapMarker } from './map.model';
 export class MapComponent implements OnInit, AfterViewInit {
   @Input() set markers(markers: MapMarker[]) {
     this.clearMarkers();
-    if (markers) {
+    if (markers && markers.length > 0) {
       for (const marker of markers) {
         this.addMarker(marker);
       }
+      const markerLocations = markers.map(marker => marker.coordinates);
+      this.centerOn(markerLocations);
     }
   }
 
@@ -25,8 +27,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   ngAfterViewInit(): void {
     this.map = L.map('map').setView(MapComponent.bordeauxCoordinates, 12);
@@ -36,7 +37,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   private addMarker(marker: MapMarker): void {
-    const layer = L.marker(marker.coordinates)
+    const layer = L.marker(marker.coordinates, {icon: MapIcons.get(marker.iconType)})
       .addTo(this.map)
       .bindPopup(marker.popupMessage);
     this._markers.push(layer);
@@ -49,4 +50,20 @@ export class MapComponent implements OnInit, AfterViewInit {
     this._markers = [];
   }
 
+  private centerOn(locations: [number, number][]): void {
+    this.map.fitBounds(locations, {animate: true, duration: 1000, maxZoom: 14});
+  }
+}
+
+const MapIcons = new Map()
+  .set(MapIconType.GREEN, buildIcon(['marker-green']))
+  .set(MapIconType.BLUE, buildIcon(['marker-blue']))
+  .set(MapIconType.RED, buildIcon(['marker-red']))
+  .set(MapIconType.DEFAULT, buildIcon([]));
+
+function buildIcon(classNames: string[]): L.DivIcon {
+  return L.divIcon({
+    html: `<span class="marker ${classNames.join(' ')}"></span>`,
+    popupAnchor: [0, -24]
+  });
 }
