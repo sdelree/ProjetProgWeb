@@ -33,7 +33,9 @@ function mapToFrontendData(apiData) {
 function mapToFrontendState(state) {
     const stateMap = {
         LIBRE: 'free',
-        COMPLET: 'full'
+        COMPLET: 'full',
+        OUVERT: 'open',
+        FERME: 'closed'
     };
     return stateMap[state];
 }

@@ -27,5 +27,7 @@ export interface ParkingPrices {
 
 export enum ParkingState {
   full = 'full',
-  free = 'free'
+  free = 'free',
+  closed = 'closed',
+  open = 'open'
 }
