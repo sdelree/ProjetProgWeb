@@ -34,6 +34,16 @@ function getVehiclesByOwner(userId) {
   });
 }
 
+function getVehiclesById(vehicleId) {
+  return new Promise((resolve, reject) =>{
+    VehiclesModel.find( {_id : vehicleId}, (error, vehicles)=>{
+      resolve(vehicles);
+    });
+  });
+}
+
+
 module.exports = {
   getVehiclesByOwner,
+  getVehiclesById
 };
