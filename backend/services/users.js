@@ -29,9 +29,17 @@ function getUserById(userId){
   });
 }
 
+function getUserByPseudo(pseudo){
+  return new Promise((resolve,reject)=>{
+    userModel.find( {pseudo},(error,user)=>{
+      resolve(user);
+    });
+  });
+}
 
 
 
 module.exports = {
-  getUserById
+  getUserById,
+  getUserByPseudo
 };
