@@ -1,9 +1,6 @@
-// const database = require('../database/connection');
-//
-// const db = database.connect();
-const mongoose = require('mongoose');
-mongoose.connect(`mongodb://localhost:27017/wheretopark`,
-    {useNewUrlParser: true, useUnifiedTopology: true});
+const database = require('../database/connection');
+
+const mongoose = database.getMongoose();
 
 const Vehicles = mongoose.Schema({
   _id: {

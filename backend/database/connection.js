@@ -7,16 +7,26 @@ const path = require('path');
  */
 
 /**
- * Connect to the MongoDB backend database.
+ * Connects to the MongoDB backend database.
  * @return {Promise<Mongoose>}
  */
 function connect() {
   return getDatabaseInfo()
     .then(databaseInfo => {
-    mongoose.connect(`mongodb://${databaseInfo.host}:${databaseInfo.port}/${databaseInfo.name}`,
-      {useNewUrlParser: true, useUnifiedTopology: true});
-    return mongoose;
+      return new Promise(((resolve, reject) => {
+        mongoose.connect(`mongodb://${databaseInfo.host}:${databaseInfo.port}/${databaseInfo.name}`,
+          {useNewUrlParser: true, useUnifiedTopology: true},
+          (err) => err ? reject(err) : resolve(mongoose));
+      }));
   });
+}
+
+/**
+ * Returns the underlying MongoDB object.
+ * @return {Mongoose}
+ */
+function getMongoose() {
+  return mongoose;
 }
 
 /**
@@ -74,5 +84,6 @@ function getInfoFromFile(fileName) {
 }
 
 module.exports = {
-  connect
+  connect,
+  getMongoose
 };
