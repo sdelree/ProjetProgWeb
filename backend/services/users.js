@@ -19,3 +19,19 @@ const UserModel = new mongoose.Schema({
     required :"mot de passe de la personne"
   }
 });
+
+
+function getUserById(userId){
+  return new Promise((resolve,reject)=>{
+    userModel.find( {_id : userId},(error,user)=>{
+      resolve(user);
+    });
+  });
+}
+
+
+
+
+module.exports = {
+  getUserById
+};
