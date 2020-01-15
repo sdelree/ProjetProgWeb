@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from '../account/account.service';
+import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private accountService: AccountService,
+    private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit() {
   }
 
+  isAuthenticated(): Observable<boolean> {
+    return this.accountService.isAuthenticated();
+  }
+
+  logout(): void {
+    this.accountService.logout().subscribe(
+      () => this.snackBar.open('Vous vous êtes déconnecté', null, {duration: 3000})
+    );
+  }
 }

@@ -3,11 +3,17 @@
     <img src="/assets/wheretopark.png" class="mx-auto mx-sm-0 my-1" alt="logo">
   </a>
   <span class="mx-auto mr-sm-0 my-2">
-    <a class="mr-1" routerLink="/login">
-      <button mat-raised-button color="secondary">Connexion</button>
-    </a>
-    <a class="ml-1" routerLink="/register">
-      <button mat-raised-button color="secondary">Inscription</button>
-    </a>
+    <span *ngIf="(isAuthenticated()|async) === false; else disconnect">
+      <a class="mr-1" routerLink="/login">
+        <button mat-raised-button color="secondary">Connexion</button>
+      </a>
+      <a class="ml-1" routerLink="/register">
+        <button mat-raised-button color="secondary">Inscription</button>
+      </a>
+    </span>
+
+    <ng-template #disconnect>
+      <button mat-raised-button color="secondary" (click)="logout()">Déconnexion</button>
+    </ng-template>
   </span>
 </mat-toolbar>
