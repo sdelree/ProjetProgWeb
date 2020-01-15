@@ -34,6 +34,7 @@ function getVehiclesByOwner(userId) {
   });
 }
 
+
 function getVehiclesById(vehicleId) {
   return new Promise((resolve, reject) =>{
     VehiclesModel.find( {_id : vehicleId}, (error, vehicles)=>{
@@ -43,7 +44,17 @@ function getVehiclesById(vehicleId) {
 }
 
 
+function createVehicle(userId, isElectric, height){
+  const vehicle =  new VehiclesModel({userId, isElectric, height });
+  return new Promise((resolve , reject) =>{
+    vehicle.save((err) => {
+      resolve();
+    });
+  });
+}
+
 module.exports = {
   getVehiclesByOwner,
-  getVehiclesById
+  getVehiclesById,
+  createVehicle
 };
