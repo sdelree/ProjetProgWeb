@@ -13,14 +13,14 @@ router.get('/', (req, res) => {
   vehiclesService.getVehiclesByOwner(userId).then(vehicle => res.send(vehicle));
 });
 
-
 router.get('/:vehicleId', (req, res) => {
   //TODO : la aussi faudrait verifier que le user authentifié est bien le propriétaire du vehicule
   const vehicleId = req.params.vehicleId;
   vehiclesService.getVehiclesById(vehicleId).then(vehicle=>res.send(vehicle));
 });
+
 //userId, isElectric, height
-route.get('/:isElectric/:height', (req,res) =>{
+router.get('/:isElectric/:height', (req,res) =>{
   //TODO : récuperer l'id du user Authentifié
   const userId =1;
   const isElectric = req.params.isElectric;
@@ -28,6 +28,7 @@ route.get('/:isElectric/:height', (req,res) =>{
 
   vehiclesService.createVehicle(userId, isElectric, height);
 });
+
 module.exports = router;
 
 

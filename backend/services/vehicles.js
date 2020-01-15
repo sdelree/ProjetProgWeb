@@ -2,7 +2,7 @@ const database = require('../database/connection');
 
 const mongoose = database.getMongoose();
 
-const Vehicles = mongoose.Schema({
+const Vehicle = mongoose.Schema({
   _id: {
     type: Number,
     required: 'ID du véhicule'
@@ -21,11 +21,11 @@ const Vehicles = mongoose.Schema({
   }
 });
 
-const VehiclesModel = mongoose.model('Vehicule', Vehicles);
+const VehicleModel = mongoose.model('Vehicle', Vehicle);
 
 function getVehiclesByOwner(userId) {
   return new Promise((resolve, reject) => {
-    VehiclesModel.find({userId}, (error, vehicles) => {
+    VehicleModel.find({userId}, (error, vehicles) => {
       resolve(vehicles);
     });
   });
@@ -34,7 +34,7 @@ function getVehiclesByOwner(userId) {
 
 function getVehiclesById(vehicleId) {
   return new Promise((resolve, reject) =>{
-    VehiclesModel.find( {_id: vehicleId}, (error, vehicles)=>{
+    VehicleModel.find( {_id: vehicleId}, (error, vehicles)=>{
       resolve(vehicles);
     });
   });
@@ -42,7 +42,7 @@ function getVehiclesById(vehicleId) {
 
 
 function createVehicle(userId, isElectric, height) {
-  const vehicle = new VehiclesModel({userId, isElectric, height});
+  const vehicle = new VehicleModel({userId, isElectric, height});
   return new Promise((resolve, reject) =>{
     vehicle.save(err => {
       resolve();
@@ -51,7 +51,7 @@ function createVehicle(userId, isElectric, height) {
 }
 
 function deleteVehicle(vehicleId) {
-  const vehicle = new VehiclesModel({_id: vehicleId});
+  const vehicle = new VehicleModel({_id: vehicleId});
   return new Promise((resolve, reject) =>{
     vehicle.save(err => {
       resolve();
