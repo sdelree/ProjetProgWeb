@@ -37,9 +37,18 @@ function getUserByPseudo(pseudo){
   });
 }
 
+function createUser(pseudo, password){
+  const user =  new userModel({pseudo, password});
+  return new Promise((resolve , reject) =>{
+    user.save((err) => {
+      resolve();
+    });
+  });
+}
 
 
 module.exports = {
   getUserById,
-  getUserByPseudo
+  getUserByPseudo,
+  createUser
 };
