@@ -23,3 +23,17 @@ const Vehicles =  mongoose.Schema({
     required :"Le Gabari du véhicule"
   }
 });
+
+const VehiclesModel = mongoose.model('Vehicule', Vehicles);
+
+function getVehiclesByOwner(userId) {
+  return new Promise((resolve, reject) => {
+    VehiclesModel.find({userId}, (error, vehicles) => {
+      resolve(vehicles);
+    });
+  });
+}
+
+module.exports = {
+  getVehiclesByOwner,
+};
