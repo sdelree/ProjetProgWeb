@@ -4,15 +4,15 @@
       <h2>{{getHelloMessage()}}, vous pouvez créer votre compte ici</h2>
       <mat-form-field class="w-100" id="firstfield">
         <label for="mail"></label>
-        <input matInput formControlName="email" placeholder="E-mail" id="mail">
+        <input matInput type="email" formControlName="email" placeholder="E-mail" id="mail">
       </mat-form-field>
       <mat-form-field class="w-100">
         <label for="password"></label>
-        <input matInput formControlName="password" placeholder="Mot de passe" id="password">
+        <input matInput type="password" formControlName="password" placeholder="Mot de passe" id="password">
       </mat-form-field>
       <mat-form-field class="w-100">
         <label for="confirmPassword"></label>
-        <input matInput formControlName="confirmPassword" placeholder="Confirmez votre mot de passe" id="confirmPassword">
+        <input matInput type="password" formControlName="confirmPassword" placeholder="Confirmez votre mot de passe" id="confirmPassword">
       </mat-form-field>
       <button mat-raised-button color="primary" [disabled]="!form.valid">Créer mon compte</button>
     </form>

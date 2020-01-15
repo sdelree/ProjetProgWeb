@@ -4,11 +4,11 @@
       <h2>{{getHelloMessage()}}, vous pouvez vous connecter ici</h2>
       <mat-form-field class="w-100" id="firstfield">
         <label for="login"></label>
-        <input matInput formControlName="email" placeholder="E-mail" id="login">
+        <input matInput type="email" formControlName="email" placeholder="E-mail" id="login">
       </mat-form-field>
       <mat-form-field class="w-100">
         <label for="password"></label>
-        <input matInput formControlName="password" placeholder="Mot de passe" id="password">
+        <input matInput type="password" formControlName="password" placeholder="Mot de passe" id="password">
       </mat-form-field>
       <button mat-raised-button color="primary" [disabled]="!form.valid">Se connecter</button>
     </form>

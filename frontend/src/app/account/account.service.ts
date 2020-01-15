@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from "rxjs";
-import { delay, switchMap, tap } from "rxjs/operators";
-import { AuthenticationToken } from "./account.model";
+import { Observable, of, Subject } from 'rxjs';
+import { delay, startWith, switchMap, tap } from 'rxjs/operators';
+import { AuthenticationToken } from './account.model';
 
 const emulatedDelay = 300;
 
@@ -36,6 +36,7 @@ export class AccountService {
 
   public isAuthenticated(): Observable<boolean> {
     return this.authStatusChange$.pipe(
+      startWith(this.authenticationToken),
       switchMap(() => of(!!this.authenticationToken))
     );
   }
