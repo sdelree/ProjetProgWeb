@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { AccountService } from "../account.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { take } from "rxjs/operators";
-import { Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AccountService } from '../account.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -31,9 +31,14 @@ export class LoginComponent implements OnInit {
     this.accountService.login(email, password).pipe(
       take(1)
     ).subscribe(
-      () => {
-        this.snackBar.open('Vous êtes authentifié', null, {duration: 3000});
-        this.router.navigate(['/']);
+      (success) => {
+        if (success) {
+          this.snackBar.open('Vous êtes authentifié', null, {duration: 3000});
+          this.router.navigate(['/']);
+        } else {
+          this.snackBar.open('L\'adresse ou le mot de passe est incorrect', null, {duration: 3000});
+          this.form.get('email').setErrors({alreadyExists: 'L\'adresse ou le mot de passe est incorrect'});
+        }
       }
     );
   }

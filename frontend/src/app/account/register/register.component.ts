@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from "@angular/forms";
-import { AccountService } from "../account.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { take } from "rxjs/operators";
-import { Router } from "@angular/router";
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AccountService } from '../account.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -40,7 +40,7 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['/login']);
         } else {
           this.snackBar.open('Cette adresse mail est déjà utilisée', null, {duration: 3000});
-          this.form.get('email').setErrors({alreadyExists: 'L\'utilisateur existe déjà'});
+          this.form.get('email').setErrors({alreadyExists: 'Cette adresse mail est déjà utilisée'});
         }
       }
     );

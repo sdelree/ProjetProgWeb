@@ -1,3 +1,3 @@
-export interface AuthenticationToken {
-  token: string;
+export interface UserInfo {
+  email: string;
 }
