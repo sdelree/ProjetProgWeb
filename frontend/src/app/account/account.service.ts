@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { delay, startWith, switchMap, tap } from 'rxjs/operators';
+import { catchError, delay, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { AuthenticationToken } from './account.model';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 const emulatedDelay = 300;
+const registerURL = `${environment.backendUrl}/users`;
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +15,15 @@ export class AccountService {
   private authenticationToken ?: AuthenticationToken = null;
   private authStatusChange$: Subject<void> = new Subject();
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   public register(email: string, password: string): Observable<boolean> {
-    return of(true).pipe(delay(emulatedDelay));
+    return this.http.post(registerURL, {email, password}).pipe(
+      map(_ => true),
+      catchError(_ => of(false))
+    );
   }
 
   public login(email: string, password: string): Observable<AuthenticationToken> {
