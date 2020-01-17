@@ -3,9 +3,9 @@ const database = require('../database/connection');
 const mongoose = database.getMongoose();
 
 const User = new mongoose.Schema({
-  nickname: {
+  email: {
     type: String,
-    required: 'pseudo de la personne?'
+    required: 'email de la personne?'
   },
   password: {
     type: String,
@@ -22,22 +22,22 @@ function getUserById(userId) {
   });
 }
 
-function getUserByNickname(nickname) {
+function getUserByEmail(email) {
   return new Promise((resolve, reject) => {
-    UserModel.findOne( {nickname}, (err, user) => {
+    UserModel.findOne( {email}, (err, user) => {
       resolve(user);
     });
   });
 }
 
-function createUser(nickname, password) {
-  return getUserByNickname(nickname).then(
+function createUser(email, password) {
+  return getUserByEmail(email).then(
     user => {
       return new Promise((resolve, reject) => {
         if (user) {
           reject('Useer already exists');
         } else {
-          const newUser = new UserModel({nickname, password});
+          const newUser = new UserModel({email, password});
           newUser.save(err => {
             resolve();
           });
@@ -60,7 +60,7 @@ function deleteUser(userId) {
 
 module.exports = {
   getUserById,
-  getUserByPseudo: getUserByNickname,
+  getUserByEmail,
   createUser,
   deleteUser
 };
