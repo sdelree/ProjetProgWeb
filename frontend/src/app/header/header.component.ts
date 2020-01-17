@@ -24,7 +24,13 @@ export class HeaderComponent implements OnInit {
 
   logout(): void {
     this.accountService.logout().subscribe(
-      () => this.snackBar.open('Vous vous êtes déconnecté', null, {duration: 3000})
+      (success) => {
+        if(success) {
+          this.snackBar.open('Vous vous êtes déconnecté', null, {duration: 3000});
+        } else {
+          this.snackBar.open('La déconnexion a échoué', null, {duration: 3000});
+        }
+      }
     );
   }
 }

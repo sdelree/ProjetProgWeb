@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 const emulatedDelay = 300;
 const registerURL = `${environment.backendUrl}/users/register`;
 const loginURL = `${environment.backendUrl}/users/login`;
+const logoutURL = `${environment.backendUrl}/users/logout`;
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +36,9 @@ export class AccountService {
   }
 
   public logout(): Observable<boolean> {
-    return of(true).pipe(
-      delay(emulatedDelay),
+    return this.http.post(logoutURL, {}).pipe(
+      map(_ => true),
+      catchError(_ => of(false)),
       tap(() => this.authenticationToken = null),
       tap(() => this.authStatusChange$.next())
     );
