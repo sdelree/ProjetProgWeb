@@ -3,16 +3,12 @@ const database = require('../database/connection');
 const mongoose = database.getMongoose();
 
 const User = new mongoose.Schema({
-  _id: {
-    type: Number,
-    required: 'id du user'
-  },
-  pseudo: {
+  nickname: {
     type: String,
     required: 'pseudo de la personne?'
   },
   password: {
-    type: Number,
+    type: String,
     required: 'mot de passe de la personne'
   }
 });
@@ -20,27 +16,36 @@ const UserModel = mongoose.model('User', User);
 
 function getUserById(userId) {
   return new Promise((resolve, reject)=>{
-    UserModel.find( {_id: userId}, (error, user)=>{
+    UserModel.findOne( {_id: userId}, (err, user) => {
       resolve(user);
     });
   });
 }
 
-function getUserByPseudo(pseudo) {
-  return new Promise((resolve, reject)=>{
-    UserModel.find( {pseudo}, (error, user)=>{
+function getUserByNickname(nickname) {
+  return new Promise((resolve, reject) => {
+    UserModel.findOne( {nickname}, (err, user) => {
       resolve(user);
     });
   });
 }
 
-function createUser(pseudo, password) {
-  const user = new UserModel({pseudo, password});
-  return new Promise((resolve, reject) =>{
-    user.save(err => {
-      resolve();
-    });
-  });
+function createUser(nickname, password) {
+  return getUserByNickname(nickname).then(
+    user => {
+      return new Promise((resolve, reject) => {
+        if (user) {
+          reject('Useer already exists');
+        } else {
+          const newUser = new UserModel({nickname, password});
+          newUser.save(err => {
+            resolve();
+          });
+        }
+      });
+    }
+  );
+
 }
 
 function deleteUser(userId) {
@@ -55,7 +60,7 @@ function deleteUser(userId) {
 
 module.exports = {
   getUserById,
-  getUserByPseudo,
+  getUserByPseudo: getUserByNickname,
   createUser,
   deleteUser
 };

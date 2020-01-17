@@ -1,10 +1,13 @@
 const express = require('express');
 const compression = require('compression');
 const cors = require('cors');
+const bodyparser = require('body-parser');
 const database = require('./database/connection');
 const rootRouter = require('./routes/index');
 const app = express();
 const port = 3000;
+
+app.use(bodyparser.json());
 
 app.use(compression());
 
