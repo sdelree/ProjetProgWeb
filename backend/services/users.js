@@ -15,46 +15,25 @@ const User = new mongoose.Schema({
 const UserModel = mongoose.model('User', User);
 
 function getUserById(userId) {
-  return new Promise((resolve, reject)=>{
-    UserModel.findOne( {_id: userId}, (err, user) => {
-      resolve(user);
-    });
-  });
+  return UserModel.findOne({_id: userId}).exec();
 }
 
 function getUserByEmail(email) {
-  return new Promise((resolve, reject) => {
-    UserModel.findOne( {email}, (err, user) => {
-      resolve(user);
-    });
-  });
+  return UserModel.findOne({email}).exec();
 }
 
 function createUser(email, password) {
-  return getUserByEmail(email).then(
-    user => {
-      return new Promise((resolve, reject) => {
-        if (user) {
-          reject('Useer already exists');
-        } else {
-          const newUser = new UserModel({email, password});
-          newUser.save(err => {
-            resolve();
-          });
-        }
-      });
-    }
-  );
-
+  return getUserByEmail(email)
+    .then(user => user == null ? Promise.resolve() : Promise.reject('User already esists'))
+    .then(_ => {
+      const newUser = new UserModel({email, password});
+      return newUser.save();
+    });
 }
 
-function deleteUser(userId) {
-  const user = new UserModel({_id: userId});
-  return new Promise((resolve, reject) =>{
-    user.remove(err => {
-      resolve();
-    });
-  });
+function deleteUserByEmail(email) {
+  return getUserByEmail(email)
+    .then(user => user.remove);
 }
 
 
@@ -62,5 +41,5 @@ module.exports = {
   getUserById,
   getUserByEmail,
   createUser,
-  deleteUser
+  deleteUserByEmail
 };
