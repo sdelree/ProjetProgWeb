@@ -19,6 +19,13 @@ router.get('/:vehicleId', (req, res) => {
   vehiclesService.getVehiclesById(vehicleId).then(vehicle=>res.send(vehicle));
 });
 
+
+router.get('/:vehicleName', (req, res) => {
+  //TODO : la aussi faudrait verifier que le user authentifié est bien le propriétaire du vehicule
+  const vehicleName = req.params.vehicleName;
+  vehiclesService.getVehiclesByName(vehicleName).then(vehicle=>res.send(vehicle));
+});
+
 //userId, isElectric, height
 router.get('/:isElectric/:height', (req,res) =>{
   //TODO : récuperer l'id du user Authentifié

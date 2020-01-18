@@ -7,6 +7,10 @@ const Vehicle = mongoose.Schema({
     type: Number,
     required: 'ID du véhicule'
   },
+  vehicleName:{
+    type: String,
+    required:"Nom du véhicule"
+  },
   userId: {
     type: Number,
     required: 'ID du propriétaire du véhicule'
@@ -26,6 +30,13 @@ const VehicleModel = mongoose.model('Vehicle', Vehicle);
 function getVehiclesByOwner(userId) {
   return new Promise((resolve, reject) => {
     VehicleModel.find({userId}, (error, vehicles) => {
+      resolve(vehicles);
+    });
+  });
+}
+function getVehiclesByName(vehicleName) {
+  return new Promise((resolve, reject) => {
+    VehicleModel.find({vehicleName}, (error, vehicles) => {
       resolve(vehicles);
     });
   });
@@ -64,5 +75,6 @@ module.exports = {
   getVehiclesByOwner,
   getVehiclesById,
   createVehicle,
-  deleteVehicle
+  deleteVehicle,
+  getVehiclesByName
 };
