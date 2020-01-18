@@ -12,6 +12,7 @@ import { AccountModule } from './account/account.module';
 import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
 import { InMemoryApiService } from "./in-memory-api.service";
 import { environment } from "../environments/environment";
+import { httpInterceptorProviders } from "./http-interceptors";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,9 @@ import { environment } from "../environments/environment";
     HttpClientInMemoryWebApiModule.forRoot(InMemoryApiService, {host: environment.backendUrl, apiBase: '/', passThruUnknownUrl: true}),
     MatButtonModule
   ],
-  providers: [],
+  providers: [
+    httpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

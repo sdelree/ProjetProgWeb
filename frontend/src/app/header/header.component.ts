@@ -23,14 +23,10 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(): void {
-    this.accountService.logout().subscribe(
-      (success) => {
-        if(success) {
-          this.snackBar.open('Vous vous êtes déconnecté', null, {duration: 3000});
-        } else {
-          this.snackBar.open('La déconnexion a échoué', null, {duration: 3000});
-        }
-      }
-    );
+    this.accountService.logout()
+      .subscribe(
+        _ => this.snackBar.open('Vous vous êtes déconnecté(e)', null, {duration: 3000}),
+        err => this.snackBar.open('La déconnexion a échoué', null, {duration: 3000})
+      );
   }
 }

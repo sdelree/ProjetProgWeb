@@ -5,7 +5,6 @@ import { UserInfo } from './account.model';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
-const emulatedDelay = 300;
 const registerURL = `${environment.backendUrl}/users/register`;
 const loginURL = `${environment.backendUrl}/users/login`;
 const logoutURL = `${environment.backendUrl}/users/logout`;
@@ -21,11 +20,8 @@ export class AccountService {
     private http: HttpClient
   ) { }
 
-  public register(email: string, password: string): Observable<boolean> {
-    return this.http.post(registerURL, {email, password}).pipe(
-      map(_ => true),
-      catchError(_ => of(false))
-    );
+  public register(email: string, password: string): Observable<UserInfo> {
+    return this.http.post<UserInfo>(registerURL, {email, password});
   }
 
   public login(email: string, password: string): Observable<UserInfo> {
@@ -35,10 +31,8 @@ export class AccountService {
     );
   }
 
-  public logout(): Observable<boolean> {
-    return this.http.post(logoutURL, {}).pipe(
-      map(_ => true),
-      catchError(_ => of(false)),
+  public logout(): Observable<void> {
+    return this.http.post<void>(logoutURL, {}).pipe(
       tap(() => this.authenticationToken = null),
       tap(() => this.authStatusChange$.next())
     );

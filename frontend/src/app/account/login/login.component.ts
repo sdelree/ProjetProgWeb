@@ -31,16 +31,14 @@ export class LoginComponent implements OnInit {
     this.accountService.login(email, password).pipe(
       take(1)
     ).subscribe(
-      (success) => {
-        if (success) {
-          this.snackBar.open('Vous êtes authentifié', null, {duration: 3000});
-          this.router.navigate(['/']);
-        } else {
-          this.snackBar.open('L\'adresse ou le mot de passe est incorrect', null, {duration: 3000});
-          this.form.get('email').setErrors({alreadyExists: 'L\'adresse ou le mot de passe est incorrect'});
-        }
-      }
-    );
+      user => {
+        this.snackBar.open(`Vous êtes authentifié(e) en tant que ${user.email}`, null, {duration: 3000});
+        this.router.navigate(['/']);
+      },
+      err => {
+        this.snackBar.open('L\'adresse ou le mot de passe est incorrect', null, {duration: 3000});
+        this.form.get('email').setErrors({alreadyExists: 'L\'adresse ou le mot de passe est incorrect'});
+      });
   }
 
   getHelloMessage(): string {

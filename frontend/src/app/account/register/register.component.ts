@@ -34,16 +34,14 @@ export class RegisterComponent implements OnInit {
     this.accountService.register(email, password).pipe(
       take(1)
     ).subscribe(
-      (success) => {
-        if (success) {
-          this.snackBar.open('Votre compte a bien été créé', null, {duration: 3000});
-          this.router.navigate(['/login']);
-        } else {
-          this.snackBar.open('Cette adresse mail est déjà utilisée', null, {duration: 3000});
-          this.form.get('email').setErrors({alreadyExists: 'Cette adresse mail est déjà utilisée'});
-        }
-      }
-    );
+      user => {
+        this.snackBar.open(`Votre compte a bien été créé pour l\'adresse email ${user.email}`, null, {duration: 3000});
+        this.router.navigate(['/login']);
+      },
+      err => {
+        this.snackBar.open('Cette adresse mail est déjà utilisée', null, {duration: 3000});
+        this.form.get('email').setErrors({alreadyExists: 'Cette adresse mail est déjà utilisée'});
+      });
   }
 
   getHelloMessage(): string {
