@@ -8,4 +8,6 @@ COPY . .
 
 RUN npm install
 
-ENTRYPOINT npm start
+ENTRYPOINT npm run start
+
+EXPOSE 3000

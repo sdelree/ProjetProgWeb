@@ -21,3 +21,5 @@ COPY --from=builder /build/dist/wheretopark /app
 COPY docker/nginx.template.conf /tmp/nginx.template.conf
 
 CMD /bin/bash -c "envsubst < /tmp/nginx.template.conf > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
+
+EXPOSE 80
