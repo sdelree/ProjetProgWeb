@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * @typedef {{host: string, port: number, name: string}} DatabaseInfo
+ * @typedef {{host: string, port: number, name: string, username: string, password: string}} DatabaseInfo
  */
 
 /**
@@ -11,10 +11,21 @@ const path = require('path');
  * @return {Promise<Mongoose>}
  */
 function connect() {
+  const envUrl = getDatabaseURLFromEnv();
+  if (envUrl) {
+    return new Promise((resolve, reject) => {
+      mongoose.connect(envUrl,
+        {useNewUrlParser: true, useUnifiedTopology: true},
+        (err) => err ? reject(err) : resolve(mongoose));
+    });
+  }
   return getDatabaseInfo()
     .then(databaseInfo => {
       return new Promise(((resolve, reject) => {
-        mongoose.connect(`mongodb://${databaseInfo.host}:${databaseInfo.port}/${databaseInfo.name}`,
+        const url = databaseInfo.username ?
+          `mongodb://${databaseInfo.username}:${databaseInfo.password}@${databaseInfo.host}:${databaseInfo.port}/${databaseInfo.name}`
+          : `mongodb://${databaseInfo.host}:${databaseInfo.port}/${databaseInfo.name}`;
+        mongoose.connect(url,
           {useNewUrlParser: true, useUnifiedTopology: true},
           (err) => err ? reject(err) : resolve(mongoose));
       }));
@@ -51,7 +62,21 @@ function getDatabaseInfo() {
  * @return {DatabaseInfo}
  */
 function getDatabaseInfoFromEnv() {
-  return process.env.DATABASE_INFO ? JSON.parse(process.env.DATABASE_INFO) : null;
+  return process.env.DATABASE_HOST ? {
+    host: process.env.DATABASE_HOST,
+    port: process.env.DATABASE_PORT,
+    name: process.env.DATABASE_NAME,
+    username: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD
+  } : null;
+}
+
+/**
+ * Gets database url from environment.
+ * @return {string}
+ */
+function getDatabaseURLFromEnv() {
+  return process.env.DATABASE_URL ? process.env.DATABASE_URL : null;
 }
 
 /**
