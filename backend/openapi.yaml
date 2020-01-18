@@ -3,31 +3,16 @@ info:
   title: WhereToPark Backend API
   description: 'The REST API that enables the WhereToPark frontend and backend apps to communicate.'
   version: 0.1.0
+security:
+  - sessionAuth: []
 tags:
   - name: parkings
     description: Information about Bordeaux\'s parkings
   - name: vehicles
     description: Details about vehicles saved on the backend
-  - name: sessions
-    description: An identifier to use to use data on the backend and retrieve them
+  - name: users
+    description: Resource used to register, login and logout a user from the application.
 paths:
-  /sessions:
-    get:
-      tags:
-        - sessions
-      summary: Get a new session id.
-      description: The session id returned by this route should be stored for further access to backend-stored data.
-      operationId: getNewSessionId
-      responses:
-        200:
-          description: A new session id has been Successfully generated.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    $ref: '#/components/schemas/SessionId'
   /parkings:
     get:
       tags:
@@ -60,18 +45,9 @@ paths:
     get:
       tags:
         - vehicles
-      summary: Get a list of the vehicles in a session.
-      description: This route can be used to get a list of the vehicles created in the session provided as a query parameter.
+      summary: Get a list of the vehicles of the currently authenticated user.
+      description: This route can be used to get a list of the vehicles created by the logged in user.
       operationId: getVehicles
-      parameters:
-        - name: sessionId
-          in: query
-          description: The session id of the user.
-          required: true
-          style: form
-          explode: true
-          schema:
-            $ref: '#/components/schemas/SessionId'
       responses:
         200:
           description: Successful operation
@@ -81,24 +57,22 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Vehicle'
-        404:
-          description: Invalid session id
+        401:
+          description: The user is not logged in.
           content: {}
     post:
       tags:
         - vehicles
-      summary: Add a new vehicle in a session.
-      description: This route can be used to add a new vehicle to the session provided as a query parameter.
+      summary: Add a new vehicle owner by the currently logged in user.
+      description: This route can be used to add a new vehicle owned by the currently logged in user.
       operationId: addVehicle
-      parameters:
-        - name: sessionId
-          in: query
-          description: The session id of the user.
-          required: true
-          style: form
-          explode: true
-          schema:
-            $ref: '#/components/schemas/SessionId'
+      requestBody:
+        description: The vehicle to add.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
       responses:
         201:
           description: Successful operation
@@ -107,24 +81,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/Vehicle'
         401:
-          description: The session id is not valid
+          description: The user is not logged in.
           content: {}
   /vehicles/{vehicleId}:
     get:
       tags:
         - vehicles
-      summary: Get a vehicle in a session.
-      description: This route can be used to retrieve a specific vehicle in the session provided as a query parameter.
+      summary: Get a vehicle.
+      description: This route can be used to retrieve a specific vehicle.
       operationId: getVehicle
       parameters:
-        - name: sessionId
-          in: query
-          description: The session id of the user.
-          required: true
-          style: form
-          explode: true
-          schema:
-            $ref: '#/components/schemas/SessionId'
         - name: vehicleId
           in: path
           description: The id of the vehicle to retrieve.
@@ -139,26 +105,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/Vehicle'
         401:
-          description: The session id is not valid.
+          description: The user is not logged in.
+          content: {}
+        403:
+          description: The user can not access this vehicle.
           content: {}
         404:
-          description: The vehicle does not exist in the provided session.
+          description: The vehicule designated by this id does not exist.
           content: {}
     put:
       tags:
         - vehicles
-      summary: Update a vehicle in a session.
-      description: This route can be used to update a vehicle in the session provided as a query parameter.
+      summary: Update a vehicle.
+      description: This route can be used to update a vehicle.
       operationId: updateVehicle
       parameters:
-        - name: sessionId
-          in: query
-          description: The session id of the user.
-          required: true
-          style: form
-          explode: true
-          schema:
-            $ref: '#/components/schemas/SessionId'
         - name: vehicleId
           in: path
           description: The id of the vehicle to update.
@@ -173,23 +134,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/Vehicle'
         401:
-          description: The session id is not valid.
+          description: The user is not logged in.
+          content: {}
+        403:
+          description: The user can not access this vehicle.
+          content: {}
+        404:
+          description: The vehicule designated by this id does not exist.
           content: {}
     delete:
       tags:
         - vehicles
-      summary: Delete a vehicle from a session.
-      description: This route can be used to delete a vehicle from the session provided as a query parameter.
+      summary: Delete a vehicle.
+      description: This route can be used to delete a vehicle.
       operationId: removeVehicle
       parameters:
-        - name: sessionId
-          in: query
-          description: The session id of the user.
-          required: true
-          style: form
-          explode: true
-          schema:
-            $ref: '#/components/schemas/SessionId'
         - name: vehicleId
           in: path
           description: The id of the vehicle to delete.
@@ -201,7 +160,79 @@ paths:
           description: Successful operation
           content: {}
         401:
-          description: The session id is not valid.
+          description: The user is not logged in.
+          content: {}
+        403:
+          description: The user can not access this vehicle.
+          content: {}
+        404:
+          description: The vehicule designated by this id does not exist.
+          content: {}
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Create a new user.
+      description: This route can be used to register a new user into the app.
+      operationId: registerUser
+      requestBody:
+        description: The credentials to user to create the user.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+      responses:
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        409:
+          description: A user already exists for this email address.
+          content: {}
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Log an user in.
+      description: This route can be used to log a user into the app.
+      operationId: loginUser
+      requestBody:
+        description: The credentials to use to log the user in.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+      responses:
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: SessionId=abcde12345; Path=/; HttpOnly
+        401:
+          description: Bad credentials.
+          content: {}
+  /users/logout:
+    post:
+      tags:
+        - users
+      summary: Log an user out.
+      description: This route can be used to log a user out of the app.
+      operationId: logoutUser
+      responses:
+        204:
+          description: Successful operation
+        401:
+          description: Bad credentials.
           content: {}
 components:
   schemas:
@@ -212,7 +243,6 @@ components:
           $ref: '#/components/schemas/ResourceId'
         name:
           type: string
-          format: int64
         prices:
           $ref: '#/components/schemas/ParkingPrices'
         location:
@@ -288,6 +318,24 @@ components:
     ResourceId:
       type: integer
       format: int64
-    SessionId:
-      type: integer
-      format: int64
+    UserCredentials:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: SessionID
+
