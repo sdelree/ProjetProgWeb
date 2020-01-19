@@ -23,6 +23,8 @@ router.post('/create', (req, res) =>{
           favorisServices.createFavoris(name, userId, latitude, longitude)
               .then(favorite=>res.send(favorite))
               .catch(err => res.status(401).send(err));
+        } else {
+          return Promise.reject('There is already 10 Favorites parkings');
         }
       })
       .catch(err => res.status(401).send(err));
@@ -31,3 +33,11 @@ router.post('/create', (req, res) =>{
 
 
 // DELETE
+router.delete('/delete/:name', (req, res) => {
+  const userId = req.session.user._id;
+  const name = req.params.name;
+  favorisServices.deleteFavoriteParking(userId, name)
+                 .then(favorite=> res.send(favorite))
+                 .catch(err => res.status(401).send(err));
+
+});
