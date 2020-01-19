@@ -19,7 +19,15 @@ const Favoris = mongoose.Schema({
 
 const favorisModel = mongoose.model('parking', Favoris);
 
+function createFavoris(name, latitude, longitude) {
+  const parking = new favorisModel({name, latitude, longitude});
+  return new Promise((resolve, reject) =>{
+    parking.save(err => {
+      resolve();
+    });
+  });
+}
 
 module.exports = {
-
+  createFavoris
 };
