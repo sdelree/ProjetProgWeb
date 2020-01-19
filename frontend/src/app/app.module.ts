@@ -9,10 +9,7 @@ import { MatButtonModule, MatToolbarModule } from '@angular/material';
 import { MainModule } from './main/main.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AccountModule } from './account/account.module';
-import { HttpClientInMemoryWebApiModule } from "angular-in-memory-web-api";
-import { InMemoryApiService } from "./in-memory-api.service";
-import { environment } from "../environments/environment";
-import { httpInterceptorProviders } from "./http-interceptors";
+import { httpInterceptorProviders } from './http-interceptors';
 
 @NgModule({
   declarations: [
@@ -27,7 +24,6 @@ import { httpInterceptorProviders } from "./http-interceptors";
     AccountModule,
     AppRoutingModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryApiService, {host: environment.backendUrl, apiBase: '/', passThruUnknownUrl: true}),
     MatButtonModule
   ],
   providers: [
