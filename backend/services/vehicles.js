@@ -61,6 +61,24 @@ function createVehicle(userId, isElectric, height) {
   });
 }
 
+function updateTypeVehicle(vehicleId, isElectric ){
+  return new Promise((resolve, reject)=>{
+    this.update({isElectric},(error, vehicles)=>{
+      resolve(vehicles);
+    });
+  });
+}
+
+
+function updateHeightVehicle(vehicleId, height ){
+  return new Promise((resolve, reject)=>{
+    this.update({height},(error, vehicles)=>{
+      resolve(vehicles);
+    });
+  });
+}
+
+
 function deleteVehicle(vehicleId) {
   const vehicle = new VehicleModel({_id: vehicleId});
   return new Promise((resolve, reject) =>{
@@ -75,6 +93,8 @@ module.exports = {
   getVehiclesByOwner,
   getVehiclesById,
   createVehicle,
+  updateHeightVehicle,
+  updateTypeVehicle,
   deleteVehicle,
   getVehiclesByName
 };
