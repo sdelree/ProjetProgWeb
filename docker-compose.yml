@@ -1,7 +1,13 @@
 version: '3.7'
 services:
+  db:
+    image: mongo:3.4
   back:
     build: ./backend/
+    environment: 
+      - DATABASE_HOST=db
+      - DATABASE_PORT=27017
+      - DATABASE_NAME=wheretopark
     ports:
       - '3000:3000'
   front:
