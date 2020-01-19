@@ -80,12 +80,12 @@ function updateHeightVehicle(vehicleId, height ){
 
 
 function deleteVehicle(vehicleId) {
-  const vehicle = new VehicleModel({_id: vehicleId});
   return new Promise((resolve, reject) =>{
-    vehicle.save(err => {
-      resolve();
+    getVehiclesById(vehicleId)
+         .then(vehicle=> vehicle.remove(), err => {
+                   resolve();
+         });
     });
-  });
 }
 
 
