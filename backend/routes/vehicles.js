@@ -6,21 +6,29 @@ const vehiclesService = require('../services/vehicles');
 // GETS
 router.get('/:id', (req, res) => {
   const id = req.params.id;
+  const userId = req.session.user._id;
   vehiclesService.getVehiclesById(id)
-                 .then(vehicle => res.send(vehicle))
+                 .then(vehicle =>{
+                        if(vehicle.userId == userId) {
+                          res.send(vehicle)
+                        }
+                        else{
+                          return Promise.reject('The connected user is not the vehicle\'s owner');
+                        }
+                  })
                  .catch(err => res.status(401).send(err));
 });
 
 router.get('/', (req, res) => {
-  // TODO Tester si le user authentifié est bien le propriétaire du véhicule
-  const userId = 1;
+
+  const userId = req.session.user._id;
   vehiclesService.getVehiclesByOwner(userId)
                  .then(vehicle => res.send(vehicle))
                  .catch(err => res.status(401).send(err));
 });
 
 router.get('/:vehicleId', (req, res) => {
-  // TODO : la aussi faudrait verifier que le user authentifié est bien le propriétaire du vehicule
+
   const vehicleId = req.params.vehicleId;
   vehiclesService.getVehiclesById(vehicleId)
                  .then(vehicle=>res.send(vehicle))
