@@ -14,7 +14,14 @@ router.get('/:id', (req, res)=>{
 
 
 // PUT
-
+router.put('/update/', (req, res) =>{
+  const email = req.body.email;
+  const password = req.body.password;
+  const userId = req.session.user._id;
+  userServices.updateUser(userId,{email,password})
+              .then(user=>res.send(user))
+              .catch(err => res.status(401).send(err));
+});
 
 // DELETE
 router.delete('/delete/:userId', (req, res) =>{

@@ -71,17 +71,18 @@ router.put('/updateType/:vehicleId', (req, res) =>{
 router.put('/updateHeight/:vehicleId', (req, res) =>{
   const vehicleToUpdate = req.params.vahicleId;
   const height = req.body.height;
+  const isElectric = req.body.isElectric;
 
   vehiclesService.getVehiclesById(vehicleToUpdate)
       .then(vehicle => {
-        vehiclesService.updateHeightVehicle(vehicle._id, height)
-            .then(updatedVehicle=>res.send(updatedVehicle))
-            .catch(err => res.status(401).send(err));
+        vehiclesService.updateVehicle(vehicle._id, {isElectric, height})
+                       .then(updatedVehicle=>res.send(updatedVehicle))
+                       .catch(err => res.status(401).send(err));
        })
       .catch(err => res.status(401).send(err));
 });
 // DELETE
-router.put('/delete/:vehicleId', (req, res) =>{
+router.delete('/delete/:vehicleId', (req, res) =>{
   const vehicleToUpdate = req.params.vahicleId;
   vehiclesService.getVehiclesById(vehicleToUpdate)
       .then(vehicle => {

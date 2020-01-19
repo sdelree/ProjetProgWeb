@@ -3,11 +3,7 @@ const database = require('../database/connection');
 const mongoose = database.getMongoose();
 
 const Vehicle = mongoose.Schema({
-  _id: {
-    type: Number,
-    required: 'ID du véhicule'
-  },
-  vehicleName:{
+  name:{
     type: String,
     required: 'Nom du véhicule'
   },
@@ -61,22 +57,14 @@ function createVehicle(userId, isElectric, height) {
   });
 }
 
-function updateTypeVehicle(vehicleId, isElectric ){
+function updateVehicle(vehicleId, information ){
   return new Promise((resolve, reject)=>{
-    this.update({isElectric},(error, vehicles)=>{
+    this.update({isElectric: information.isElectric, height: information.height},(error, vehicles)=>{
       resolve(vehicles);
     });
   });
 }
 
-
-function updateHeightVehicle(vehicleId, height ){
-  return new Promise((resolve, reject)=>{
-    this.update({height},(error, vehicles)=>{
-      resolve(vehicles);
-    });
-  });
-}
 
 
 function deleteVehicle(vehicleId) {
@@ -93,8 +81,7 @@ module.exports = {
   getVehiclesByOwner,
   getVehiclesById,
   createVehicle,
-  updateHeightVehicle,
-  updateTypeVehicle,
+  updateVehicle,
   deleteVehicle,
   getVehiclesByName
 };
