@@ -31,17 +31,26 @@ router.post('/create', (req, res) =>{
 });
 // PUT
 router.put('/update', (req, res) =>{
+  const userId = req.session.user._id;
   const name = req.body.name;
   const latitude = req.body.latitude;
   const longitude = req.body.longitude;
-
-  favorisServices.updateFavorites(vehicleToUpdate)
-    .then(vehicle => {
-      vehiclesService.updateTypeVehicle(vehicle._id, isElectric)
-        .then(updatedVehicle=>res.send(updatedVehicle))
-        .catch(err => res.status(401).send(err));
-    })
-    .catch(err => res.status(401).send(err));
+  favorisServices.getFavoritesByName(userId,name)
+                 .then( favoris =>{
+                          if(favoris != null){
+                            favorisServices.updateFavorites(vehicleToUpdate)
+                              .then(vehicle => {
+                                favorisServices.updateFavorites(vehicle._id, {name, latitude, longitude})
+                                                .then(updatedVehicle=>res.send(updatedVehicle))
+                                                .catch(err => res.status(401).send(err));
+                              })
+                              .catch(err => res.status(401).send(err));
+                          }
+                          else{
+                               return Promise.reject('This Parking doesn\'t exist');
+                          }
+                 })
+                 .catch(err => res.status(401).send(err));
 });
 
 

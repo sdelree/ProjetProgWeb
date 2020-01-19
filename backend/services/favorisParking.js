@@ -30,6 +30,13 @@ function getFavoritesByUser(userId) {
     });
   });
 }
+function getFavoritesByName(userIdn, name) {
+  return new promise((resolbe, reject) =>{
+    favorisModel.find( {userIdn, name}, (error, favoris)=>{
+      resolve(favoris);
+    });
+  });
+}
 
 function createFavoris(name, userId, latitude, longitude) {
   const parking = new favorisModel({name, userId, latitude, longitude});
@@ -72,6 +79,7 @@ function deleteFavoriteParking(userId, name) {
 module.exports = {
   createFavoris,
   getFavoritesByUser,
+  getFavoritesByName,
   getFavoritesNumber,
   updateFavorites,
   deleteFavoriteParking
