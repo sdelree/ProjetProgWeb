@@ -27,10 +27,16 @@ router.get('/', (req, res) => {
 });
 // GET VEHICLE BY ID
 router.get('/:vehicleId', (req, res) => {
-
+  const userId = req.session.user._id;
   const vehicleId = req.params.vehicleId;
   vehiclesService.getVehiclesById(vehicleId)
-                 .then(vehicle=>res.send(vehicle))
+                 .then(vehicle=>
+                 {  if(vehicle.userId === userId){
+                      res.send(vehicle)}
+                      else{
+                        return Promise.reject('The connected user is not the owner of the vehicle!!');
+                      }
+                 })
                  .catch(err => res.status(401).send(err));
 });
 
@@ -93,11 +99,16 @@ router.put('/updateType/:vehicleId', (req, res) =>{
 router.delete('/delete/:vehicleId', (req, res) =>{
   const vehicleToUpdate = req.params.vahicleId;
   vehiclesService.getVehiclesById(vehicleToUpdate)
-      .then(vehicle => {
-        vehiclesService.deleteVehicle(vehicle._id)
-            .then(updatedVehicle=>res.send(updatedVehicle))
-            .catch(err => res.status(401).send(err));
-      })
-      .catch(err => res.status(401).send(err));
+                 .then(vehicle => {
+                      if(vehicle !== null) {
+                        vehiclesService.deleteVehicle(vehicle._id)
+                          .then(updatedVehicle => res.send(updatedVehicle))
+                          .catch(err => res.status(401).send(err));
+                      }
+                      else{
+                        return Promise.reject('This vehicle doesn\'t exist');
+                      }
+                 })
+                 .catch(err => res.status(401).send(err));
 });
 module.exports = router;

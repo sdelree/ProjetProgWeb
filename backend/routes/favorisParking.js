@@ -58,8 +58,16 @@ router.put('/update', (req, res) =>{
 router.delete('/delete/:name', (req, res) => {
   const userId = req.session.user._id;
   const name = req.params.name;
-  favorisServices.deleteFavoriteParking(userId, name)
-                 .then(favorite=> res.send(favorite))
+  favorisServices.getFavoritesByName(userId,name)
+                 .then(parking=>{
+                   if(parking !== null){
+                     favorisServices.deleteFavoriteParking(userId, name)
+                                    .then(favorite=> res.send(favorite))
+                                    .catch(err => res.status(401).send(err));
+                   }
+                   else {
+                       return Promise.reject('This Parking doesn\'t exist');
+                   }
+                 })
                  .catch(err => res.status(401).send(err));
-
 });
