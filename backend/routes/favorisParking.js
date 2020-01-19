@@ -9,12 +9,12 @@ const favorisServices = require('../services/favorisParking');
 
 //POST
 router.post('/create', (req, res) =>{
-  // TODO : récuperer l'id du user Authentifié
   const name = req.body.name;
+  const userId=1;
   const latitude = req.body.latitude;
   const longitude = req.body.longitude;
 
-  favorisServices.createFavoris(name, latitude, longitude).then(favoris=>res.send(favoris));
+  favorisServices.createFavoris(name, userId, latitude, longitude).then(favoris=>res.send(favoris));
 });
 
 

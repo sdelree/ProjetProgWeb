@@ -7,6 +7,10 @@ const Favoris = mongoose.Schema({
     type: String,
     required: 'Nom du parking'
   },
+  userId:{
+    type: Number,
+    required: 'identifiant utilisateur'
+  },
   latitude:{
     type: Number,
     required:" Latitude du parking"
@@ -19,8 +23,10 @@ const Favoris = mongoose.Schema({
 
 const favorisModel = mongoose.model('parking', Favoris);
 
-function createFavoris(name, latitude, longitude) {
-  const parking = new favorisModel({name, latitude, longitude});
+
+
+function createFavoris(name, userId, latitude, longitude) {
+  const parking = new favorisModel({name, userId,latitude, longitude});
   return new Promise((resolve, reject) =>{
     parking.save(err => {
       resolve();
