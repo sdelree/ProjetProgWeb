@@ -3,6 +3,10 @@ const database = require('../database/connection');
 const mongoose = database.getMongoose();
 
 const User = new mongoose.Schema({
+  _id:{
+    type: Number,
+    required: "Identifiant user"
+  },
   email: {
     type: String,
     required: 'email de la personne?'
@@ -53,6 +57,11 @@ function deleteUserByEmail(email) {
       .then(user => user.remove);
 }
 
+function deleteUserById(userId) {
+  return getUserById(userId)
+     .then(user => user.remove);
+}
+
 
 module.exports = {
   getUserById,
@@ -60,5 +69,6 @@ module.exports = {
   createUser,
   updateUserEmail,
   updateUserPassword,
-  deleteUserByEmail
+  deleteUserByEmail,
+  deleteUserById
 };
