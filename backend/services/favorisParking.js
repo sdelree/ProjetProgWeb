@@ -7,23 +7,23 @@ const Favoris = mongoose.Schema({
     type: String,
     required: 'Nom du parking'
   },
-  userId:{
+  userId: {
     type: Number,
     required: 'identifiant utilisateur'
   },
-  latitude:{
+  latitude: {
     type: Number,
-    required:" Latitude du parking"
+    required: ' Latitude du parking'
   },
-  longitude:{
+  longitude: {
     type: Number,
-    required:" Longitude du parking"
+    required: ' Longitude du parking'
   }
 });
 
 const favorisModel = mongoose.model('parking', Favoris);
 
-function getFavoritesByUser(userId){
+function getFavoritesByUser(userId) {
   return new promise((resolbe, reject) =>{
     favorisModel.find( {userId}, (error, favoris)=>{
       resolve(favoris);
@@ -32,7 +32,7 @@ function getFavoritesByUser(userId){
 }
 
 function createFavoris(name, userId, latitude, longitude) {
-  const parking = new favorisModel({name, userId,latitude, longitude});
+  const parking = new favorisModel({name, userId, latitude, longitude});
   return new Promise((resolve, reject) =>{
     parking.save(err => {
       resolve();
@@ -40,7 +40,16 @@ function createFavoris(name, userId, latitude, longitude) {
   });
 }
 
+function getFavoritesNumber(userId) {
+  return new promise((resolbe, reject) =>{
+    favorisModel.find( {userId}, (error, favoris)=>{
+      resolve(favoris);
+    }).size();
+  });
+}
+
 module.exports = {
   createFavoris,
-  getFavoritesByUser
+  getFavoritesByUser,
+  getFavoritesNumber
 };
