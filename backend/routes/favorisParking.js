@@ -30,6 +30,19 @@ router.post('/create', (req, res) =>{
       .catch(err => res.status(401).send(err));
 });
 // PUT
+router.put('/update', (req, res) =>{
+  const name = req.body.name;
+  const latitude = req.body.latitude;
+  const longitude = req.body.longitude;
+
+  favorisServices.updateFavorites(vehicleToUpdate)
+    .then(vehicle => {
+      vehiclesService.updateTypeVehicle(vehicle._id, isElectric)
+        .then(updatedVehicle=>res.send(updatedVehicle))
+        .catch(err => res.status(401).send(err));
+    })
+    .catch(err => res.status(401).send(err));
+});
 
 
 // DELETE

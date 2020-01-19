@@ -40,6 +40,16 @@ function createFavoris(name, userId, latitude, longitude) {
   });
 }
 
+function updateFavorites(userId, information) {
+    return new Promise((resolve, reject)=>{
+      this.update({name : information.name, userId,
+                   latitude : information.latitude,
+                   longitude : information.longitude}, (error, vehicles)=>{
+                                                             resolve(vehicles);
+                                                        });
+    });
+}
+
 function getFavoritesNumber(userId) {
   return new promise((resolbe, reject) =>{
     favorisModel.find( {userId}, (error, favoris)=>{
@@ -54,7 +64,7 @@ function deleteFavoriteParking(userId, name) {
       .then(favoriteParkings => {
                           favoriteParkings.remove({name}), err => {
                                     resolve();
-                          };
+                          }
       });
   });
 }
@@ -63,5 +73,6 @@ module.exports = {
   createFavoris,
   getFavoritesByUser,
   getFavoritesNumber,
+  updateFavorites,
   deleteFavoriteParking
 };
