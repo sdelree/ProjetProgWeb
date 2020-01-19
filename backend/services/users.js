@@ -31,9 +31,26 @@ function createUser(email, password) {
     });
 }
 
+function updateUserEmail(userId,email){
+  return new Promise((resolve, reject) => {
+    VehicleModel.update({email}, (error, vehicles) => {
+      resolve(vehicles);
+    });
+  });
+}
+
+function updateUserPassword(userId,password){
+  return new Promise((resolve, reject) => {
+    VehicleModel.update({password}, (error, vehicles) => {
+      resolve(vehicles);
+    });
+  });
+}
+
+
 function deleteUserByEmail(email) {
   return getUserByEmail(email)
-    .then(user => user.remove);
+      .then(user => user.remove);
 }
 
 
@@ -41,5 +58,7 @@ module.exports = {
   getUserById,
   getUserByEmail,
   createUser,
+  updateUserEmail,
+  updateUserPassword,
   deleteUserByEmail
 };
