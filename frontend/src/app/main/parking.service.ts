@@ -7,7 +7,7 @@ import { map, retry } from 'rxjs/operators';
 
 const url = `${environment.backendUrl}/parkings`;
 const numberOfTries = 2;
-const numberOfParkings = 7;
+const numberOfParkings = 4;
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +54,7 @@ export class ParkingService {
     parkings.sort(
       (parkingA, parkingB) => parkingA.score - parkingB.score
     );
-    return parkings.slice(parkings.length - numberOfParkings - 1, parkings.length);
+    return parkings.slice(parkings.length - numberOfParkings, parkings.length).reverse();
   }
 }
 
