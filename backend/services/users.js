@@ -3,10 +3,6 @@ const database = require('../database/connection');
 const mongoose = database.getMongoose();
 
 const User = new mongoose.Schema({
-  _id:{
-    type: Number,
-    required: "Identifiant user"
-  },
   email: {
     type: String,
     required: 'email de la personne?'
@@ -35,20 +31,14 @@ function createUser(email, password) {
     });
 }
 
-function updateUserEmail(userId,email){
-  return new Promise((resolve, reject) => {
-    VehicleModel.update({email}, (error, vehicles) => {
-      resolve(vehicles);
-    });
-  });
-}
 
-function updateUserPassword(userId,password){
+function updateUser(userId, information) {
   return new Promise((resolve, reject) => {
-    VehicleModel.update({password}, (error, vehicles) => {
-      resolve(vehicles);
+    UserModel.update({email: information.email, password: information.password}, (error, user) => {
+      resolve(user);
     });
   });
+
 }
 
 
@@ -67,8 +57,7 @@ module.exports = {
   getUserById,
   getUserByEmail,
   createUser,
-  updateUserEmail,
-  updateUserPassword,
+  updateUser,
   deleteUserByEmail,
   deleteUserById
 };

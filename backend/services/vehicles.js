@@ -3,11 +3,7 @@ const database = require('../database/connection');
 const mongoose = database.getMongoose();
 
 const Vehicle = mongoose.Schema({
-  _id: {
-    type: Number,
-    required: 'ID du véhicule'
-  },
-  vehicleName:{
+  name:{
     type: String,
     required: 'Nom du véhicule'
   },
@@ -34,9 +30,9 @@ function getVehiclesByOwner(userId) {
     });
   });
 }
-function getVehiclesByName(vehicleName) {
+function getVehiclesByName(userId, name) {
   return new Promise((resolve, reject) => {
-    VehicleModel.find({vehicleName}, (error, vehicles) => {
+    VehicleModel.find({userId, name}, (error, vehicles) => {
       resolve(vehicles);
     });
   });
@@ -52,8 +48,8 @@ function getVehiclesById(vehicleId) {
 }
 
 
-function createVehicle(userId, isElectric, height) {
-  const vehicle = new VehicleModel({userId, isElectric, height});
+function createVehicle(userId, name, isElectric, height) {
+  const vehicle = new VehicleModel({userId, name, isElectric, height});
   return new Promise((resolve, reject) =>{
     vehicle.save(err => {
       resolve();
@@ -61,22 +57,14 @@ function createVehicle(userId, isElectric, height) {
   });
 }
 
-function updateTypeVehicle(vehicleId, isElectric ){
+function updateVehicle(vehicleId, information ){
   return new Promise((resolve, reject)=>{
-    this.update({isElectric},(error, vehicles)=>{
+    this.update({isElectric: information.isElectric, height: information.height},(error, vehicles)=>{
       resolve(vehicles);
     });
   });
 }
 
-
-function updateHeightVehicle(vehicleId, height ){
-  return new Promise((resolve, reject)=>{
-    this.update({height},(error, vehicles)=>{
-      resolve(vehicles);
-    });
-  });
-}
 
 
 function deleteVehicle(vehicleId) {
@@ -93,8 +81,7 @@ module.exports = {
   getVehiclesByOwner,
   getVehiclesById,
   createVehicle,
-  updateHeightVehicle,
-  updateTypeVehicle,
+  updateVehicle,
   deleteVehicle,
   getVehiclesByName
 };
