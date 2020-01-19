@@ -30,6 +30,13 @@ function getFavoritesByUser(userId) {
     });
   });
 }
+function getFavoritesByName(userIdn, name) {
+  return new promise((resolbe, reject) =>{
+    favorisModel.find( {userIdn, name}, (error, favoris)=>{
+      resolve(favoris);
+    });
+  });
+}
 
 function createFavoris(name, userId, latitude, longitude) {
   const parking = new favorisModel({name, userId, latitude, longitude});
@@ -38,6 +45,16 @@ function createFavoris(name, userId, latitude, longitude) {
       resolve();
     });
   });
+}
+
+function updateFavorites(userId, information) {
+    return new Promise((resolve, reject)=>{
+      this.update({name : information.name, userId,
+                   latitude : information.latitude,
+                   longitude : information.longitude}, (error, vehicles)=>{
+                                                             resolve(vehicles);
+                                                        });
+    });
 }
 
 function getFavoritesNumber(userId) {
@@ -54,7 +71,7 @@ function deleteFavoriteParking(userId, name) {
       .then(favoriteParkings => {
                           favoriteParkings.remove({name}), err => {
                                     resolve();
-                          };
+                          }
       });
   });
 }
@@ -62,6 +79,8 @@ function deleteFavoriteParking(userId, name) {
 module.exports = {
   createFavoris,
   getFavoritesByUser,
+  getFavoritesByName,
   getFavoritesNumber,
+  updateFavorites,
   deleteFavoriteParking
 };
