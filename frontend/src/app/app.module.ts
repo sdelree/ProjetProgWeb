@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +10,10 @@ import { MainModule } from './main/main.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AccountModule } from './account/account.module';
 import { httpInterceptorProviders } from './http-interceptors';
+import { registerLocaleData } from '@angular/common';
+import localfr from '@angular/common/locales/fr';
+
+registerLocaleData(localfr, 'fr');
 
 @NgModule({
   declarations: [
@@ -27,7 +31,8 @@ import { httpInterceptorProviders } from './http-interceptors';
     MatButtonModule
   ],
   providers: [
-    httpInterceptorProviders
+    httpInterceptorProviders,
+    { provide: LOCALE_ID, useValue: 'fr' }
   ],
   bootstrap: [AppComponent]
 })

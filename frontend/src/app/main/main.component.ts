@@ -5,6 +5,7 @@ import { Address } from './address.model';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { MapIconType, MapMarker } from './map/map.model';
 import { ParkingService } from './parking.service';
+import { Parking } from './parking.model';
 
 const autoCompleteDebounceTime = 200;
 
@@ -16,6 +17,7 @@ const autoCompleteDebounceTime = 200;
 export class MainComponent implements OnInit {
   autoComplete$: Observable<Address[]>;
   mapMarkers: MapMarker[] = [];
+  parkings: Parking[] = [];
 
   private autoCompleteRequested$: Subject<string> = new Subject();
 
@@ -48,6 +50,7 @@ export class MainComponent implements OnInit {
               iconType: MapIconType.BLUE
             }));
             this.mapMarkers = this.mapMarkers.concat(markers);
+            this.parkings = parkings;
           });
       });
   }

@@ -5,7 +5,7 @@
         <app-search-bar class="mb-4 w-100" (search)="onSearch($event)" (inputChange)="onAutoComplete($event)"
         [autoCompleteAddresses]="autoComplete$ | async"></app-search-bar>
         <app-vehicle-selection class="w-100"></app-vehicle-selection>
-        <h3 class="w-100" id="results">Parkings</h3>
+        <app-parking-display [parkings]="parkings"></app-parking-display>
       </mat-card>
     </div>
     <div class="col-md-7 col-lg-8 col-xl-9">

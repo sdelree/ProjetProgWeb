@@ -12,11 +12,12 @@ import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { VehicleSelectionComponent } from './vehicle-selection/vehicle-selection.component';
 import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material';
+import { MatAutocompleteModule, MatExpansionModule } from '@angular/material';
+import { ParkingDisplayComponent } from './parking-display/parking-display.component';
 
 
 @NgModule({
-  declarations: [MapComponent, MainComponent, SearchBarComponent, VehicleSelectionComponent],
+  declarations: [MapComponent, MainComponent, SearchBarComponent, VehicleSelectionComponent, ParkingDisplayComponent],
   imports: [
     CommonModule,
     MainRoutingModule,
@@ -26,7 +27,8 @@ import { MatAutocompleteModule } from '@angular/material';
     FormsModule,
     MatTabsModule,
     MatSelectModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatExpansionModule
   ]
 })
 export class MainModule { }
