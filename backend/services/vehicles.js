@@ -9,7 +9,7 @@ const Vehicle = mongoose.Schema({
   },
   vehicleName:{
     type: String,
-    required:"Nom du véhicule"
+    required: 'Nom du véhicule'
   },
   userId: {
     type: Number,
