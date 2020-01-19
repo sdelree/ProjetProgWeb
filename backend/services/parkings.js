@@ -7,7 +7,9 @@ function mapToFrontendData(apiData) {
     return parkingList
         .map(parking => parking.fields)
         .map(parking => ({
-            name: parking.nom,
+          name: parking.nom.lastIndexOf('-') !== -1 ?
+            parking.nom.substring(0, parking.nom.lastIndexOf('-')) :
+            parking.nom,
             state: mapToFrontendState(parking.etat),
             freePlaces: parking.libres,
             maxVehicleHeight: parking.gabari_max ? parseFloat(parking.gabari_max.replace(',', '.')) : null,
