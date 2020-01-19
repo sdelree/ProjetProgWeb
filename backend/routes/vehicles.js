@@ -9,8 +9,8 @@ router.get('/:id', (req, res) => {
   const userId = req.session.user._id;
   vehiclesService.getVehiclesById(id)
                  .then(vehicle =>{
-                        if(vehicle.userId == userId) {
-                          res.send(vehicle)
+                        if(vehicle.userId === userId) {
+                          res.send(vehicle);
                         }
                         else{
                           return Promise.reject('The connected user is not the vehicle\'s owner');
@@ -18,15 +18,14 @@ router.get('/:id', (req, res) => {
                   })
                  .catch(err => res.status(401).send(err));
 });
-
+// GET OWNER BY ID
 router.get('/', (req, res) => {
-
   const userId = req.session.user._id;
   vehiclesService.getVehiclesByOwner(userId)
                  .then(vehicle => res.send(vehicle))
                  .catch(err => res.status(401).send(err));
 });
-
+// GET VEHICLE BY ID
 router.get('/:vehicleId', (req, res) => {
 
   const vehicleId = req.params.vehicleId;
@@ -47,7 +46,7 @@ router.get('/:vehicleName', (req, res) => {
 // CREATE
 router.post('/create', (req, res) =>{
   // TODO : récuperer l'id du user Authentifié
-  const userId =1;
+  const userId =req.session.user._id;
   const isElectric = req.body.isElectric;
   const height = req.body.height;
 
