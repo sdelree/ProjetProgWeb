@@ -36,24 +36,40 @@ router.get('/:vehicleId', (req, res) => {
 
 
 router.get('/:vehicleName', (req, res) => {
-  // TODO : la aussi faudrait verifier que le user authentifié est bien le propriétaire du vehicule
+  const userId = req.session.user._id;
   const vehicleName = req.params.vehicleName;
   vehiclesService.getVehiclesByName(vehicleName)
-                 .then(vehicle=>res.send(vehicle))
+                 .then(vehicle=>{
+                              if(vehicle.userId === userId) {
+                                res.send(vehicle);
+                              }
+                              else {
+                                return Promise.reject('The connected user is not the vehicle\'s owner');
+                              }
+                        })
                  .catch(err => res.status(401).send(err));
 });
 
 // CREATE
 router.post('/create', (req, res) =>{
-  // TODO : récuperer l'id du user Authentifié
   const userId =req.session.user._id;
   const isElectric = req.body.isElectric;
   const height = req.body.height;
+  const name = req.body.name;
 
-  vehiclesService.createVehicle(userId, isElectric, height)
-                 .then(vehicle=>res.send(vehicle))
+  vehiclesService.getVehiclesByName(userId, name)
+                 .then(vehicle => {
+                        if(vehicle === null){
+                          vehiclesService.createVehicle(userId, name, isElectric, height)
+                                         .then(vehicle=>res.send(vehicle))
+                                         .catch(err => res.status(401).send(err));
+                        } else {
+                          return Promise.reject('This vehicle already exists');
+                        }
+                 })
                  .catch(err => res.status(401).send(err));
 });
+
 // UPDATE
 router.put('/updateType/:vehicleId', (req, res) =>{
   const vehicleToUpdate = req.params.vahicleId;
