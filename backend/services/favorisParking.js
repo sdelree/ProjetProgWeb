@@ -2,6 +2,8 @@ const database = require('../database/connection');
 
 const mongoose = database.getMongoose();
 
+mongoose.ObjectId.get(v => v ? v.toString() : v);
+
 const Favorites = mongoose.Schema({
   name: {
     type: String,
@@ -23,57 +25,32 @@ const Favorites = mongoose.Schema({
 
 const favoriteModel = mongoose.model('parking', Favorites);
 
+
 function getFavoritesByUser(userId) {
-  return new Promise((resolbe, reject) =>{
-    favoriteModel.find( {userId}, (error, favorite)=>{
-      resolve(favorite);
-    });
-  });
+  return favoriteModel.find( {userId} ).exec();
 }
+
 function getFavoritesByName(userIdn, name) {
-  return new Promise((resolbe, reject) =>{
-    favoriteModel.find( {userIdn, name}, (error, favorite)=>{
-      resolve(favorite);
-    });
-  });
+  return favoriteModel.find( {userIdn, name} ).exec();
 }
 
 function createFavorite(name, userId, latitude, longitude) {
   const parking = new favoriteModel({name, userId, latitude, longitude});
-  return new Promise((resolve, reject) =>{
-    parking.save(err => {
-      resolve();
-    });
-  });
+  return parking.save();
 }
 
 function updateFavorites(userId, information) {
-  return new Promise((resolve, reject)=>{
-    this.update({name: information.name, userId,
-      latitude: information.latitude,
-      longitude: information.longitude}, (error, vehicles)=>{
-      resolve(vehicles);
-    });
-  });
+  return favoriteModel.findByIdAndUpdate(userId, {name: information.name, userId,
+    latitude: information.latitude,
+    longitude: information.longitude}).exec();
 }
 
 function getFavoritesNumber(userId) {
-  return new Promise((resolbe, reject) =>{
-    favoriteModel.find( {userId}, (error, favorite)=>{
-      resolve(favorite);
-    }).size();
-  });
+  return favoriteModel.find( {userId}).exec().size();
 }
 
 function deleteFavoriteParking(userId, name) {
-  return new Promise((resolve, reject) =>{
-    getFavoritesByUser(userId)
-      .then(favoriteParkings => {
-        favoriteParkings.remove({name}), err => {
-          resolve();
-        };
-      });
-  });
+  return favoriteModel.deleteOne({userId, name}).exec();
 }
 
 module.exports = {
