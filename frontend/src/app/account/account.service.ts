@@ -14,7 +14,7 @@ const isLoggedInURL = `${environment.backendUrl}/users/isLoggedIn`;
   providedIn: 'root'
 })
 export class AccountService {
-  private authenticationToken ?: UserInfo = null;
+  private userInfo ?: UserInfo = null;
   private authStatusChange$: Subject<void> = new Subject();
 
   constructor(
@@ -27,21 +27,21 @@ export class AccountService {
 
   public login(email: string, password: string): Observable<UserInfo> {
     return this.http.post<UserInfo>(loginURL, {email, password}).pipe(
-      tap((authenticationToken) => this.authenticationToken = authenticationToken),
+      tap((userInfo) => this.userInfo = userInfo),
       tap(() => this.authStatusChange$.next())
     );
   }
 
   public checkCurrentToken(): Observable<UserInfo> {
     return this.http.get<UserInfo>(isLoggedInURL).pipe(
-      tap((authenticationToken) => this.authenticationToken = authenticationToken),
+      tap((userInfo) => this.userInfo = userInfo),
       tap(() => this.authStatusChange$.next())
-    )
+    );
   }
 
   public logout(): Observable<void> {
     return this.http.post<void>(logoutURL, {}).pipe(
-      tap(() => this.authenticationToken = null),
+      tap(() => this.userInfo = null),
       tap(() => this.authStatusChange$.next())
     );
   }
@@ -49,7 +49,7 @@ export class AccountService {
   public isAuthenticated(): Observable<boolean> {
     return this.authStatusChange$.pipe(
       startWith(null),
-      switchMap(() => of(!!this.authenticationToken))
+      switchMap(() => of(!!this.userInfo))
     );
   }
 }

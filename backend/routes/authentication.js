@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const userService = require('../services/users');
+const jwt = require('jsonwebtoken');
 
 const saltPasses = 10;
 
@@ -21,7 +22,12 @@ router.post('/login', (req, res) => {
         return bcrypt.compare(password, user.password)
           .then(match => {
             if (match) {
-              req.session.userId = user._id;
+              res.cookie('Token', jwt.sign({
+                exp: Math.floor(Date.now() / 1000) + (60 * 60),
+                data: {
+                  userId: user._id.toString()
+                }
+              }, 'secret'));
               res.send({email: user.email});
             } else {
               res.status(401).end();
@@ -35,7 +41,8 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-  req.session.destroy(err => err ? res.status(500).send(err) : res.status(204).end());
+  res.cookie('Token', '', {expires: new Date(0)});
+  res.status(204).end();
 });
 
 router.get('/isLoggedIn', (req, res) => {

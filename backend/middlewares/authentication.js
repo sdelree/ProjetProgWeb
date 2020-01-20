@@ -4,10 +4,13 @@
  */
 
 const userService = require('../services/users');
+const jwt = require('jsonwebtoken');
 
 function authenticationMiddleware(req, res, next) {
-  if (req.session.userId) {
-    userService.getUserById(req.session.userId)
+  try {
+    const decodedToken = jwt.verify(req.cookies.Token, 'secret');
+    const userId = decodedToken.data.userId;
+    userService.getUserById(userId)
       .then(user => {
         if (user) {
           delete user.password;
@@ -15,7 +18,8 @@ function authenticationMiddleware(req, res, next) {
         }
         next();
       });
-  } else {
+  }
+  catch (e) {
     next();
   }
 }
