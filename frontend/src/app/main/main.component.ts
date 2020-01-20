@@ -38,7 +38,6 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.onSearch('Rue Victoire Americaine 33000 Bordeaux');
     this.autoComplete$ = this.autoCompleteRequested$.pipe(
       debounceTime(autoCompleteDebounceTime),
       distinctUntilChanged(),
