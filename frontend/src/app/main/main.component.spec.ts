@@ -15,7 +15,7 @@ describe('MainComponent', () => {
     const addrSpy = jasmine.createSpyObj('AddressService', ['getMatchingAddress', 'getAddress']);
     const parkingSpy = jasmine.createSpyObj('ParkingService', ['getBestParkings']);
     TestBed.configureTestingModule({
-      declarations: [ MainComponent, VehicleSelectionStubComponent, MapStubComponent, SearchBarStubComponent ],
+      declarations: [ MainComponent, VehicleSelectionStubComponent, MapStubComponent, SearchBarStubComponent, ParkingDisplayStubComponent ],
       imports: [ MatCardModule ],
       providers: [
         { provide: AddressService, useValue: addrSpy },
@@ -49,3 +49,8 @@ class SearchBarStubComponent {
 
 @Component({selector: 'app-vehicle-selection', template: ''})
 class VehicleSelectionStubComponent { }
+
+@Component({selector: 'app-parking-display', template: ''})
+class ParkingDisplayStubComponent {
+  @Input() parkings;
+}
