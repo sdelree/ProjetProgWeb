@@ -2,6 +2,8 @@ const database = require('../database/connection');
 
 const mongoose = database.getMongoose();
 
+mongoose.ObjectId.get(v => v ? v.toString() : v);
+
 const Vehicle = mongoose.Schema({
   name: {
     type: String,
@@ -24,43 +26,25 @@ const Vehicle = mongoose.Schema({
 const VehicleModel = mongoose.model('Vehicle', Vehicle);
 
 function getVehiclesByOwner(userId) {
-  return new Promise((resolve, reject) => {
-    VehicleModel.find({userId}, (error, vehicles) => {
-      resolve(vehicles);
-    });
-  });
+  return VehicleModel.find({userId}).exec();
 }
+
 function getVehicleByName(userId, name) {
-  return new Promise((resolve, reject) => {
-    VehicleModel.findOne({userId, name}, (error, vehicles) => {
-      resolve(vehicles);
-    });
-  });
+  return VehicleModel.findOne({userId, name}).exec();
 }
 
-
-function getVehiclesById(vehicleId) {
-  return new Promise((resolve, reject) =>{
-    VehicleModel.find( {_id: vehicleId}, (error, vehicles)=>{
-      resolve(vehicles);
-    });
-  });
+function getVehicleById(vehicleId) {
+  return VehicleModel.findById(vehicleId).exec();
 }
-
 
 function createVehicle(userId, name, isElectric, height) {
   const vehicle = new VehicleModel({userId, name, isElectric, height});
   return vehicle.save();
 }
 
-function updateVehicle(vehicleId, information ) {
-  return new Promise((resolve, reject)=>{
-    this.update({isElectric: information.isElectric, height: information.height}, (error, vehicles)=>{
-      resolve(vehicles);
-    });
-  });
+function updateVehicle(vehicleId, update ) {
+  return VehicleModel.findByIdAndUpdate(vehicleId, update).exec();
 }
-
 
 function deleteVehicle(vehicleId) {
   return VehicleModel.deleteOne({_id: vehicleId}).exec();
@@ -69,7 +53,7 @@ function deleteVehicle(vehicleId) {
 
 module.exports = {
   getVehiclesByOwner,
-  getVehiclesById,
+  getVehicleById,
   createVehicle,
   updateVehicle,
   deleteVehicle,

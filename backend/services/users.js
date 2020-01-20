@@ -15,11 +15,11 @@ const User = new mongoose.Schema({
 const UserModel = mongoose.model('User', User);
 
 function getUserById(userId) {
-  return UserModel.findById(userId).exec().then(user => user.toObject());
+  return UserModel.findById(userId).exec();
 }
 
 function getUserByEmail(email) {
-  return UserModel.findOne({email}).exec().then(user => user.toObject());
+  return UserModel.findOne({email}).exec();
 }
 
 function createUser(email, password) {

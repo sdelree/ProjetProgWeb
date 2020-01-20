@@ -2,58 +2,45 @@ const express = require('express');
 const router = express.Router();
 const vehiclesService = require('../services/vehicles');
 
+router.use('/*', (req, res, next) => req.user ? next() : res.status(401).end());
 
-// GETS
-router.get('/:id', (req, res) => {
-  const id = req.params.id;
-  const userId = req.user._id;
-  vehiclesService.getVehiclesById(id)
-    .then(vehicle =>{
-      if (vehicle.userId === userId) {
-        res.send(vehicle);
-      } else {
-        return Promise.reject(new Error('The connected user is not the vehicle\'s owner'));
-      }
-    })
-    .catch(err => res.status(401).send(err));
-});
-
-// GET OWNER BY ID
+// GET ALL BY OWNER
 router.get('/', (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user._id.toString();
   vehiclesService.getVehiclesByOwner(userId)
-    .then(vehicle => res.send(vehicle))
-    .catch(err => res.status(401).send(err));
+    .then(vehicles => res.send(vehicles))
+    .catch(err => res.status(500).end());
 });
 
 // CREATE
 router.post('/', (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user._id.toString();
   const {isElectric, height, name} = req.body;
 
   vehiclesService.createVehicle(userId, name, isElectric, height)
     .then(vehicle => res.status(201).send(vehicle))
-    .catch(err => res.status(500).send(err));
+    .catch(err => res.status(500).end());
 });
 
-// GET VEHICLE BY ID
-router.get('/:vehicleId', (req, res) => {
-  const userId = req.user._id;
-  const vehicleId = req.params.vehicleId;
-  vehiclesService.getVehiclesById(vehicleId)
-    .then(vehicle=> {
-      if (vehicle.userId === userId) {
+// GET BY ID
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  const userId = req.user._id.toString();
+  vehiclesService.getVehicleById(id)
+    .then(vehicle => {
+      if (!vehicle) {
+        res.status(404).end();
+      } else if (vehicle.userId === userId) {
         res.send(vehicle);
       } else {
-        return Promise.reject(new Error('The connected user is not the owner of the vehicle!!'));
+        res.send(403).end();
       }
     })
-    .catch(err => res.status(401).send(err));
+    .catch(err => res.status(500).end());
 });
 
-
 router.get('/:vehicleName', (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user._id.toString();
   const vehicleName = req.params.vehicleName;
   vehiclesService.getVehicleByName(vehicleName)
     .then(vehicle=>{
@@ -66,39 +53,43 @@ router.get('/:vehicleName', (req, res) => {
     .catch(err => res.status(401).send(err));
 });
 
-
 // UPDATE
-router.put('/updateType/:vehicleId', (req, res) =>{
-  const vehicleToUpdate = req.params.vahicleId;
-  const isElectric = req.body.isElectric;
-  const height = req.body.height;
-  const name = req.body.name;
-  vehiclesService.getVehiclesById(vehicleToUpdate)
+router.put('/:id', (req, res) => {
+  const userId = req.user._id.toString();
+  const id = req.params.id;
+  const {isElectric, height, name} = req.body;
+  vehiclesService.getVehicleById(id)
     .then(vehicle => {
-      if (vehicle !== null) {
+      if (!vehicle) {
+        res.status(404).end();
+      } else if (vehicle.userId === userId) {
         vehiclesService.updateVehicle(vehicle._id, {name, isElectric, height})
           .then(updatedVehicle => res.send(updatedVehicle))
-          .catch(err => res.status(401).send(err));
+          .catch(err => res.status(500).end());
       } else {
-        return Promise.reject(new Error('This vehicle doesn\'t exist'));
+        res.send(403).end();
       }
     })
-    .catch(err => res.status(401).send(err));
+    .catch(err => res.status(500).end());
 });
 
 // DELETE
-router.delete('/:vehicleId', (req, res) =>{
-  const id = req.params.vehicleId;
-  vehiclesService.getVehiclesById(id)
+router.delete('/:id', (req, res) => {
+  const id = req.params.id;
+  const userId = req.user._id.toString();
+  vehiclesService.getVehicleById(id)
     .then(vehicle => {
-      if (vehicle !== null) {
+      if (!vehicle) {
+        res.status(404).end();
+      } else if (vehicle.userId === userId) {
         vehiclesService.deleteVehicle(vehicle._id)
-          .then(updatedVehicle => res.send(updatedVehicle))
-          .catch(err => res.status(401).send(err));
+          .then(_ => res.status(204).send())
+          .catch(err => res.status(500).end());
       } else {
-        return Promise.reject(new Error('This vehicle doesn\'t exist'));
+        res.status(403).end();
       }
     })
-    .catch(err => res.status(401).send(err));
+    .catch(err => res.status(500).end());
 });
+
 module.exports = router;
