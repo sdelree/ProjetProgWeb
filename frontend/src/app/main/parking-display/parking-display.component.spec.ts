@@ -19,6 +19,7 @@ describe('ParkingDisplayComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ParkingDisplayComponent);
     component = fixture.componentInstance;
+    component.parkings = [];
     fixture.detectChanges();
   });
 
