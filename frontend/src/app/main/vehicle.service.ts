@@ -62,7 +62,6 @@ export class VehicleService {
       map(vehicles => vehicles.map(vehicle => {
         if (vehicle._id === toUpdate._id) {
           isPresent = true;
-          console.log(toUpdate);
           return toUpdate;
         }
         return vehicle;

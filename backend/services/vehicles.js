@@ -14,7 +14,7 @@ const Vehicle = mongoose.Schema({
     required: 'ID du propriétaire du véhicule'
   },
   isElectric: {
-    type: String,
+    type: Boolean,
     required: 'Type de véhicule de la personne?'
   },
   height: {
