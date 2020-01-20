@@ -12,6 +12,8 @@ tags:
     description: Details about vehicles saved on the backend
   - name: users
     description: Resource used to register, login and logout a user from the application.
+  - name: favorites
+    description:: List of the 10 favorites parkings of the connected user
 paths:
   /parkings:
     get:
@@ -234,6 +236,55 @@ paths:
         401:
           description: Bad credentials.
           content: {}
+
+  /favorites/:
+    post:
+      tags:
+        - favorites
+      summary: Add a parking to favorites.
+      description: This route can be used to add a parking to the favorite parkings list of the connected user.
+      operationId: addFavorites
+      responses:
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Favorite'
+        409:
+          description: There is already 10 favorite Parkings.
+          content: {}
+    put:
+      tags:
+        - favorites
+      summary: Update a favorite parking.
+      description: This route can be used to update the information about one of favorite parkings of the connected user.
+      operationId: updateFavorite
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Favorite'
+        404:
+          description: This parking doesn't exist.
+          content: {}
+
+    delete:
+      tags:
+        - favorites
+      summary: Delete a favorite parking.
+      description: This route can be used to delete one of favorite parkings of the connected user.
+      operationId: deleteFavorite
+      responses:
+        204:
+          description: Successful operation
+          content: {}
+        404:
+          description: This parking doesn't exist.
+          content: {}
+
 components:
   schemas:
     Parking:
@@ -310,6 +361,10 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/ResourceId'
+        name:
+          type: string
+        userId:
+          type: number
         isElectic:
           type: boolean
         height:
@@ -333,9 +388,26 @@ components:
         email:
           type: string
           format: email
+    Favorite:
+      type: object
+      properties:
+        name:
+          type: string
+        userId:
+          type: number
+        latitude:
+          type: number
+          format: float
+        longitude:
+          type: number
+          format: float
+
   securitySchemes:
     sessionAuth:
       type: apiKey
       in: cookie
       name: SessionID
+
+
+
 

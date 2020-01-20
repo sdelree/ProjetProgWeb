@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const favorisServices = require('../services/favorisParking');
+const favoriteServices = require('../services/favorisParking');
 
 
 // GETS
@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 });
 
 // POST
-router.post('/create', (req, res) =>{
+router.post('/', (req, res) =>{
   const name = req.body.name;
   const userId=1;
   const latitude = req.body.latitude;
@@ -20,7 +20,7 @@ router.post('/create', (req, res) =>{
   favorisServices.getFavoritesNumber(userId)
       .then(size=>{
         if (size < 10) {
-          favorisServices.createFavoris(name, userId, latitude, longitude)
+          favorisServices.createFavorite(name, userId, latitude, longitude)
               .then(favorite=>res.send(favorite))
               .catch(err => res.status(401).send(err));
         } else {
@@ -30,17 +30,17 @@ router.post('/create', (req, res) =>{
       .catch(err => res.status(401).send(err));
 });
 // PUT
-router.put('/update', (req, res) =>{
+router.put('/', (req, res) =>{
   const userId = req.user._id;
   const name = req.body.name;
   const latitude = req.body.latitude;
   const longitude = req.body.longitude;
-  favorisServices.getFavoritesByName(userId, name)
-      .then( favoris =>{
-        if (favoris != null) {
-          favorisServices.updateFavorites(vehicleToUpdate)
+  favoriteServices.getFavoritesByName(userId, name)
+      .then( favorite =>{
+        if (favorite != null) {
+          favoriteServices.updateFavorites(vehicleToUpdate)
               .then(vehicle => {
-                favorisServices.updateFavorites(vehicle._id, {name, latitude, longitude})
+                favoriteServices.updateFavorites(vehicle._id, {name, latitude, longitude})
                     .then(updatedVehicle=>res.send(updatedVehicle))
                     .catch(err => res.status(401).send(err));
               })
@@ -54,13 +54,13 @@ router.put('/update', (req, res) =>{
 
 
 // DELETE
-router.delete('/delete/:name', (req, res) => {
+router.delete('/:name', (req, res) => {
   const userId = req.user._id;
   const name = req.params.name;
-  favorisServices.getFavoritesByName(userId, name)
+  favoriteServices.getFavoritesByName(userId, name)
       .then(parking=>{
         if (parking !== null) {
-          favorisServices.deleteFavoriteParking(userId, name)
+          favoriteServices.deleteFavoriteParking(userId, name)
               .then(favorite=> res.send(favorite))
               .catch(err => res.status(401).send(err));
         } else {

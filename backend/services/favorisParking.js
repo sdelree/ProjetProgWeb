@@ -2,7 +2,7 @@ const database = require('../database/connection');
 
 const mongoose = database.getMongoose();
 
-const Favoris = mongoose.Schema({
+const Favorites = mongoose.Schema({
   name: {
     type: String,
     required: 'Nom du parking'
@@ -21,25 +21,25 @@ const Favoris = mongoose.Schema({
   }
 });
 
-const favorisModel = mongoose.model('parking', Favoris);
+const favoriteModel = mongoose.model('parking', Favorites);
 
 function getFavoritesByUser(userId) {
   return new Promise((resolbe, reject) =>{
-    favorisModel.find( {userId}, (error, favoris)=>{
-      resolve(favoris);
+    favoriteModel.find( {userId}, (error, favorite)=>{
+      resolve(favorite);
     });
   });
 }
 function getFavoritesByName(userIdn, name) {
   return new Promise((resolbe, reject) =>{
-    favorisModel.find( {userIdn, name}, (error, favoris)=>{
-      resolve(favoris);
+    favoriteModel.find( {userIdn, name}, (error, favorite)=>{
+      resolve(favorite);
     });
   });
 }
 
-function createFavoris(name, userId, latitude, longitude) {
-  const parking = new favorisModel({name, userId, latitude, longitude});
+function createFavorite(name, userId, latitude, longitude) {
+  const parking = new favoriteModel({name, userId, latitude, longitude});
   return new Promise((resolve, reject) =>{
     parking.save(err => {
       resolve();
@@ -59,8 +59,8 @@ function updateFavorites(userId, information) {
 
 function getFavoritesNumber(userId) {
   return new Promise((resolbe, reject) =>{
-    favorisModel.find( {userId}, (error, favoris)=>{
-      resolve(favoris);
+    favoriteModel.find( {userId}, (error, favorite)=>{
+      resolve(favorite);
     }).size();
   });
 }
@@ -77,7 +77,7 @@ function deleteFavoriteParking(userId, name) {
 }
 
 module.exports = {
-  createFavoris,
+  createFavorite,
   getFavoritesByUser,
   getFavoritesByName,
   getFavoritesNumber,
