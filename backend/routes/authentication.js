@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const userService = require('../services/users');
-const jwt = require('jsonwebtoken');
+const jwtAuthenticator = require('../security/jwt_auth');
 
 const saltPasses = 10;
 
@@ -22,13 +22,11 @@ router.post('/login', (req, res) => {
         return bcrypt.compare(password, user.password)
           .then(match => {
             if (match) {
-              res.cookie('Token', jwt.sign({
-                exp: Math.floor(Date.now() / 1000) + (60 * 60),
-                data: {
-                  userId: user._id.toString()
-                }
-              }, 'secret'));
-              res.send({email: user.email});
+              jwtAuthenticator.createToken(user._id.toString())
+                .then(token => {
+                  res.cookie(jwtAuthenticator.COOKIE_STORE_NAME, token);
+                  res.send({email: user.email});
+                });
             } else {
               res.status(401).end();
             }
@@ -41,7 +39,7 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-  res.cookie('Token', '', {expires: new Date(0)});
+  res.cookie(jwtAuthenticator.COOKIE_STORE_NAME, '', {expires: new Date(0)});
   res.status(204).end();
 });
 
