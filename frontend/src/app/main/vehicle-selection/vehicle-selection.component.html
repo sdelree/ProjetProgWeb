@@ -1,8 +1,8 @@
 <mat-form-field>
   <mat-label>Sélectionner le véhicule</mat-label>
-  <mat-select>
-    <mat-option>
-      Test placeholder
+  <mat-select [(value)]="selected" (selectionChange)="onSelect()">
+    <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">
+      {{ vehicle.name }}
     </mat-option>
   </mat-select>
 </mat-form-field>
