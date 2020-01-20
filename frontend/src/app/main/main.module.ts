@@ -14,10 +14,11 @@ import { VehicleSelectionComponent } from './vehicle-selection/vehicle-selection
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule, MatExpansionModule } from '@angular/material';
 import { ParkingDisplayComponent } from './parking-display/parking-display.component';
+import { VehicleFormComponent } from './vehicle-form/vehicle-form.component';
 
 
 @NgModule({
-  declarations: [MapComponent, MainComponent, SearchBarComponent, VehicleSelectionComponent, ParkingDisplayComponent],
+  declarations: [ MapComponent, MainComponent, SearchBarComponent, VehicleSelectionComponent, ParkingDisplayComponent, VehicleFormComponent ],
   imports: [
     CommonModule,
     MainRoutingModule,
@@ -29,6 +30,7 @@ import { ParkingDisplayComponent } from './parking-display/parking-display.compo
     MatSelectModule,
     MatAutocompleteModule,
     MatExpansionModule
-  ]
+  ],
+  entryComponents: [ VehicleFormComponent ]
 })
 export class MainModule { }
