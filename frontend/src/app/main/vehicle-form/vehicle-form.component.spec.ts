@@ -4,6 +4,8 @@ import { VehicleFormComponent } from './vehicle-form.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatInputModule } from "@angular/material/input";
 
 describe('VehicleFormComponent', () => {
   let component: VehicleFormComponent;
@@ -13,7 +15,7 @@ describe('VehicleFormComponent', () => {
     const dialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     TestBed.configureTestingModule({
       declarations: [ VehicleFormComponent ],
-      imports: [ NoopAnimationsModule, ReactiveFormsModule, MatDialogModule ],
+      imports: [ NoopAnimationsModule, ReactiveFormsModule, MatDialogModule, MatInputModule, MatCheckboxModule ],
       providers: [
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} }

@@ -6,8 +6,9 @@ import { MatCardModule } from '@angular/material/card';
 import { AddressService } from './address.service';
 import { ParkingService } from './parking.service';
 import { AccountService } from "../account/account.service";
-import { MatDialogModule, MatSnackBar } from '@angular/material';
+import { MatDialogModule } from '@angular/material';
 import { VehicleService } from './vehicle.service';
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 describe('MainComponent', () => {
   let component: MainComponent;
@@ -21,7 +22,7 @@ describe('MainComponent', () => {
     const vehicleSpy = jasmine.createSpyObj('VehicleService', ['addVehicle', 'getVehicles']);
     TestBed.configureTestingModule({
       declarations: [ MainComponent, VehicleSelectionStubComponent, MapStubComponent, SearchBarStubComponent, ParkingDisplayStubComponent ],
-      imports: [ MatCardModule, MatSnackBar, MatDialogModule ],
+      imports: [ MatCardModule, MatSnackBarModule, MatDialogModule ],
       providers: [
         { provide: AddressService, useValue: addrSpy },
         { provide: ParkingService, useValue: parkingSpy},
@@ -55,7 +56,9 @@ class SearchBarStubComponent {
 }
 
 @Component({selector: 'app-vehicle-selection', template: ''})
-class VehicleSelectionStubComponent { }
+class VehicleSelectionStubComponent {
+  @Input() vehicles;
+}
 
 @Component({selector: 'app-parking-display', template: ''})
 class ParkingDisplayStubComponent {
