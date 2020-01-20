@@ -6,6 +6,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { MapIconType, MapMarker } from './map/map.model';
 import { ParkingService } from './parking.service';
 import { Parking } from './parking.model';
+import { AccountService } from "../account/account.service";
 
 const autoCompleteDebounceTime = 200;
 
@@ -23,7 +24,8 @@ export class MainComponent implements OnInit {
 
   constructor(
     private addressService: AddressService,
-    private parkingService: ParkingService
+    private parkingService: ParkingService,
+    private accountService: AccountService
   ) { }
 
   ngOnInit() {
@@ -32,6 +34,10 @@ export class MainComponent implements OnInit {
       distinctUntilChanged(),
       switchMap(toAutoComplete => this.addressService.getMatchingAddress(toAutoComplete))
     );
+  }
+
+  isAuthenticated() {
+    return this.accountService.isAuthenticated();
   }
 
   onSearch(value: string) {

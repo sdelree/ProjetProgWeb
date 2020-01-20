@@ -5,6 +5,7 @@ import { Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { AddressService } from './address.service';
 import { ParkingService } from './parking.service';
+import { AccountService } from "../account/account.service";
 
 describe('MainComponent', () => {
   let component: MainComponent;
@@ -14,12 +15,14 @@ describe('MainComponent', () => {
   beforeEach(async(() => {
     const addrSpy = jasmine.createSpyObj('AddressService', ['getMatchingAddress', 'getAddress']);
     const parkingSpy = jasmine.createSpyObj('ParkingService', ['getBestParkings']);
+    const accountSpy = jasmine.createSpyObj('AccountService', ['isAuthenticated']);
     TestBed.configureTestingModule({
       declarations: [ MainComponent, VehicleSelectionStubComponent, MapStubComponent, SearchBarStubComponent, ParkingDisplayStubComponent ],
       imports: [ MatCardModule ],
       providers: [
         { provide: AddressService, useValue: addrSpy },
-        { provide: ParkingService, useValue: parkingSpy}
+        { provide: ParkingService, useValue: parkingSpy},
+        { provide: AccountService, useValue: accountSpy }
       ]
     })
     .compileComponents();
