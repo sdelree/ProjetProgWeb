@@ -8,17 +8,18 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SearchBarComponent } from './search-bar/search-bar.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { VehicleSelectionComponent } from './vehicle-selection/vehicle-selection.component';
 import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule, MatExpansionModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatCheckboxModule, MatDialogModule, MatExpansionModule } from '@angular/material';
 import { ParkingDisplayComponent } from './parking-display/parking-display.component';
 import { VehicleFormComponent } from './vehicle-form/vehicle-form.component';
 
 
 @NgModule({
-  declarations: [ MapComponent, MainComponent, SearchBarComponent, VehicleSelectionComponent, ParkingDisplayComponent, VehicleFormComponent ],
+  declarations: [ MapComponent, MainComponent, SearchBarComponent,
+    VehicleSelectionComponent, ParkingDisplayComponent, VehicleFormComponent ],
   imports: [
     CommonModule,
     MainRoutingModule,
@@ -29,7 +30,11 @@ import { VehicleFormComponent } from './vehicle-form/vehicle-form.component';
     MatTabsModule,
     MatSelectModule,
     MatAutocompleteModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCheckboxModule
   ],
   entryComponents: [ VehicleFormComponent ]
 })

@@ -3,8 +3,11 @@
     <div class="col-md-5 col-lg-4 col-xl-3 order-12 order-md-0">
       <mat-card id="control-panel" class="h-100 mat-elevation-z5">
         <app-search-bar class="mb-4 w-100" (search)="onSearch($event)" (inputChange)="onAutoComplete($event)"
-        [autoCompleteAddresses]="autoComplete$ | async"></app-search-bar>
-        <app-vehicle-selection *ngIf="isAuthenticated() | async" class="w-100"></app-vehicle-selection>
+                        [autoCompleteAddresses]="autoComplete$ | async"></app-search-bar>
+        <div class="w-100" *ngIf="isAuthenticated() | async">
+          <app-vehicle-selection [vehicles]="vehicles$ |async"></app-vehicle-selection>
+          <button class="mat-raised-button" (click)="openVehicleForm()">Ajouter un véhicule</button>
+        </div>
         <app-parking-display [parkings]="parkings"></app-parking-display>
       </mat-card>
     </div>

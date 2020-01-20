@@ -6,7 +6,11 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { MapIconType, MapMarker } from './map/map.model';
 import { ParkingService } from './parking.service';
 import { Parking } from './parking.model';
-import { AccountService } from "../account/account.service";
+import { AccountService } from '../account/account.service';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { VehicleFormComponent } from './vehicle-form/vehicle-form.component';
+import { VehicleService } from './vehicle.service';
+import { Vehicle } from './vehicle.model';
 
 const autoCompleteDebounceTime = 200;
 
@@ -19,13 +23,17 @@ export class MainComponent implements OnInit {
   autoComplete$: Observable<Address[]>;
   mapMarkers: MapMarker[] = [];
   parkings: Parking[] = [];
+  vehicles$: Observable<Vehicle[]>
 
   private autoCompleteRequested$: Subject<string> = new Subject();
 
   constructor(
     private addressService: AddressService,
     private parkingService: ParkingService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private vehicleService: VehicleService,
+    private matSnackBar: MatSnackBar,
+    private matDialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -34,6 +42,7 @@ export class MainComponent implements OnInit {
       distinctUntilChanged(),
       switchMap(toAutoComplete => this.addressService.getMatchingAddress(toAutoComplete))
     );
+    this.vehicles$ = this.vehicleService.getVehicles();
   }
 
   isAuthenticated() {
@@ -65,5 +74,16 @@ export class MainComponent implements OnInit {
     if (value !== '') {
       this.autoCompleteRequested$.next(value);
     }
+  }
+
+  openVehicleForm() {
+    const formRef = this.matDialog.open(VehicleFormComponent, {});
+    formRef.afterClosed().subscribe(vehicle => {
+      if (vehicle !== undefined) {
+        this.vehicleService.addVehicle(vehicle).subscribe(
+          _ => this.matSnackBar.open('Votre véhicule a bien été ajouté'),
+            _ => 'Il y a eu une erreur lors de l\'ajout de votre véhicule');
+      }
+    });
   }
 }
