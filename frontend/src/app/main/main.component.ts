@@ -38,6 +38,7 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.onSearch('Rue Victoire Americaine 33000 Bordeaux');
     this.autoComplete$ = this.autoCompleteRequested$.pipe(
       debounceTime(autoCompleteDebounceTime),
       distinctUntilChanged(),
@@ -58,7 +59,7 @@ export class MainComponent implements OnInit {
           popupMessage: `Votre destination : ${address.properties.name}`,
           iconType: MapIconType.RED
         }];
-        this.parkingService.getBestParkings(address.geometry.coordinates).subscribe(
+        this.parkingService.getBestParkings(address.geometry.coordinates, this.selectedVehicle).subscribe(
           parkings => {
             const markers = parkings.map((parking, index) => ({
               coordinates: parking.location,
