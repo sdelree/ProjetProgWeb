@@ -85,10 +85,11 @@ router.put('/updateType/:vehicleId', (req, res) =>{
     })
     .catch(err => res.status(401).send(err));
 });
+
 // DELETE
-router.delete('/delete/:vehicleId', (req, res) =>{
-  const vehicleToUpdate = req.params.vahicleId;
-  vehiclesService.getVehiclesById(vehicleToUpdate)
+router.delete('/:vehicleId', (req, res) =>{
+  const id = req.params.vehicleId;
+  vehiclesService.getVehiclesById(id)
     .then(vehicle => {
       if (vehicle !== null) {
         vehiclesService.deleteVehicle(vehicle._id)
