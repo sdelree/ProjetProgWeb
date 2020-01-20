@@ -18,7 +18,7 @@ export class VehicleFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<VehicleFormComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() private vehicle ?: Vehicle
+    @Inject(MAT_DIALOG_DATA) @Optional() public vehicle ?: Vehicle
   ) { }
 
   ngOnInit() {
