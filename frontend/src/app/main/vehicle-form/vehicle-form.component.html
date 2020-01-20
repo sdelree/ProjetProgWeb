@@ -1,5 +1,10 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <h3>Ajouter un véhicule</h3>
+  <h3>
+    <ng-container *ngIf="vehicle; else elseBlock">
+      Modifier le véhicule
+    </ng-container>
+    <ng-template #elseBlock>Ajouter un véhicule</ng-template>
+  </h3>
   <mat-form-field class="w-100" id="firstfield">
     <label for="name"></label>
     <input matInput type="text" formControlName="name" placeholder="Nom du véhicule" id="name">

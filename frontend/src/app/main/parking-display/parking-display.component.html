@@ -1,4 +1,4 @@
-<h3 class="w-100" id="results">Parkings</h3>
+<h3 class="w-100" id="results" *ngIf="parkings.length !== 0">Parkings</h3>
 <mat-accordion>
   <mat-expansion-panel class="parking" *ngFor="let parking of parkings;index as i">
     <mat-expansion-panel-header>

@@ -12,7 +12,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { VehicleSelectionComponent } from './vehicle-selection/vehicle-selection.component';
 import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule, MatButtonModule, MatCheckboxModule, MatDialogModule, MatExpansionModule } from '@angular/material';
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatDialogModule,
+  MatExpansionModule,
+  MatIconModule
+} from '@angular/material';
 import { ParkingDisplayComponent } from './parking-display/parking-display.component';
 import { VehicleFormComponent } from './vehicle-form/vehicle-form.component';
 
@@ -34,7 +41,8 @@ import { VehicleFormComponent } from './vehicle-form/vehicle-form.component';
     MatDialogModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatIconModule
   ],
   entryComponents: [ VehicleFormComponent ]
 })

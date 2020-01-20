@@ -23,7 +23,8 @@ export class MainComponent implements OnInit {
   autoComplete$: Observable<Address[]>;
   mapMarkers: MapMarker[] = [];
   parkings: Parking[] = [];
-  vehicles$: Observable<Vehicle[]>
+  vehicles$: Observable<Vehicle[]>;
+  selectedVehicle: Vehicle;
 
   private autoCompleteRequested$: Subject<string> = new Subject();
 
@@ -32,7 +33,7 @@ export class MainComponent implements OnInit {
     private parkingService: ParkingService,
     private accountService: AccountService,
     private vehicleService: VehicleService,
-    private matSnackBar: MatSnackBar,
+    private snackBar: MatSnackBar,
     private matDialog: MatDialog
   ) { }
 
@@ -76,14 +77,38 @@ export class MainComponent implements OnInit {
     }
   }
 
-  openVehicleForm() {
+  createVehicle() {
     const formRef = this.matDialog.open(VehicleFormComponent, {});
     formRef.afterClosed().subscribe(vehicle => {
       if (vehicle !== undefined) {
         this.vehicleService.addVehicle(vehicle).subscribe(
-          _ => this.matSnackBar.open('Votre véhicule a bien été ajouté'),
-            _ => 'Il y a eu une erreur lors de l\'ajout de votre véhicule');
+          _ => this.snackBar.open('Votre véhicule a bien été ajouté', null, {duration: 3000}),
+          _ => this.snackBar.open('Il y a eu une erreur lors de l\'ajout de votre véhicule', null, {duration: 4000}));
       }
     });
+  }
+
+  onVehicleSelection(vehicle: Vehicle) {
+    this.selectedVehicle = vehicle;
+  }
+
+  editVehicle() {
+    const formRef = this.matDialog.open(VehicleFormComponent, {data: this.selectedVehicle});
+    formRef.afterClosed().subscribe(vehicle => {
+      if (vehicle !== undefined) {
+        this.vehicleService.updateVehicle(vehicle).subscribe(
+          _ => this.snackBar.open('Votre véhicule a bien été modifié', null, {duration: 3000}),
+          _ => this.snackBar.open('Il y a eu une erreur lors de la modification de votre véhicule', null, {duration: 4000}));
+      }
+    });
+  }
+
+  deleteVehicle() {
+    this.vehicleService.deleteVehicle(this.selectedVehicle).subscribe(
+      _ => {
+        this.snackBar.open('Votre véhicule a bien été supprimé', null, {duration: 3000});
+        this.selectedVehicle = null;
+      },
+      _ => this.snackBar.open('Il y a eu une erreur lors de la suppression de votre véhicule', null, {duration: 4000}));
   }
 }

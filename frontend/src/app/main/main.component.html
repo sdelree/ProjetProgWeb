@@ -5,8 +5,24 @@
         <app-search-bar class="mb-4 w-100" (search)="onSearch($event)" (inputChange)="onAutoComplete($event)"
                         [autoCompleteAddresses]="autoComplete$ | async"></app-search-bar>
         <div class="w-100" *ngIf="isAuthenticated() | async">
-          <app-vehicle-selection [vehicles]="vehicles$ |async"></app-vehicle-selection>
-          <button class="mat-raised-button" (click)="openVehicleForm()">Ajouter un véhicule</button>
+          <app-vehicle-selection (vehicleSelect)="onVehicleSelection($event)" [vehicles]="vehicles$ |async"></app-vehicle-selection>
+          <button mat-icon-button class="mat-raised-button" (click)="createVehicle()">
+            <mat-icon>
+              add
+            </mat-icon>
+          </button>
+          <ng-container *ngIf="selectedVehicle">
+            <button mat-icon-button class="mat-raised-button" (click)="editVehicle()">
+              <mat-icon>
+                edit
+              </mat-icon>
+            </button>
+            <button mat-icon-button class="mat-raised-button" (click)="deleteVehicle()">
+              <mat-icon>
+                delete
+              </mat-icon>
+            </button>
+          </ng-container>
         </div>
         <app-parking-display [parkings]="parkings"></app-parking-display>
       </mat-card>
