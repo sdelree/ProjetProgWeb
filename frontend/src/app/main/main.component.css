@@ -3,6 +3,7 @@
   z-index: 500;
   box-shadow: 0 -3px 5px -1px rgba(0,0,0,.2);
   overflow-y: auto;
+  height: 100%
 }
 
 app-vehicle-selection{
@@ -13,4 +14,14 @@ app-vehicle-selection{
 button{
   margin-left: 0.8rem;
   display: inline-block;
+}
+
+@media (max-width: 767px) {
+  #control-panel {
+    height: 60%;
+  }
+
+  #map-pannel {
+    height: 40%;
+  }
 }
