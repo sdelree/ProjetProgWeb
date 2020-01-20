@@ -27,11 +27,14 @@ const favoriteModel = mongoose.model('parking', Favorites);
 
 
 function getFavoritesByUser(userId) {
-  return favoriteModel.find( {userId} ).exec();
+  return favoriteModel.find({userId}).exec();
 }
 
-function getFavoritesByName(userIdn, name) {
-  return favoriteModel.find( {userIdn, name} ).exec();
+function getFavoritesByName(userId, name) {
+  return favoriteModel.find({userId, name}).exec();
+}
+function getFavoriteById(id) {
+  return favoriteModel.findById(id).exec();
 }
 
 function createFavorite(name, userId, latitude, longitude) {
@@ -40,9 +43,10 @@ function createFavorite(name, userId, latitude, longitude) {
 }
 
 function updateFavorites(userId, information) {
-  return favoriteModel.findByIdAndUpdate(userId, {name: information.name, userId,
+  return favoriteModel.findByIdAndUpdate(userId, {
+    name: information.name,
     latitude: information.latitude,
-    longitude: information.longitude}).exec();
+    longitude: information.longitude}, {new: true}).exec();
 }
 
 function getFavoritesNumber(userId) {
@@ -57,6 +61,7 @@ module.exports = {
   createFavorite,
   getFavoritesByUser,
   getFavoritesByName,
+  getFavoriteById,
   getFavoritesNumber,
   updateFavorites,
   deleteFavoriteParking

@@ -3,7 +3,7 @@ const rootRouter = express.Router();
 
 const parkingsRouter = require('./parkings');
 const vehicleRouter = require('./vehicles');
-const favoriteParkingRouter = require('./favorisParking');
+const favoriteParkingRouter = require('./favorites');
 const authenticationRouter = require('./authentication');
 
 rootRouter.use('/parkings', parkingsRouter);

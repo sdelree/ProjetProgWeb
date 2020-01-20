@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const favoriteServices = require('../services/favorisParking');
+const favoriteServices = require('../services/favorites');
 
 
 // GETS
 router.get('/', (req, res) => {
   const userId = req.user._id;
-  favorisServices.getFavoritesByUser(userId)
+  favoriteServices.getFavoritesByUser(userId)
     .then(favorites=>res.send(favorites))
     .catch(err => res.status(401).send(err));
 });
@@ -14,13 +14,13 @@ router.get('/', (req, res) => {
 // POST
 router.post('/', (req, res) =>{
   const name = req.body.name;
-  const userId=1;
+  const userId = 1;
   const latitude = req.body.latitude;
   const longitude = req.body.longitude;
-  favorisServices.getFavoritesNumber(userId)
+  favoriteServices.getFavoritesNumber(userId)
     .then(size=>{
       if (size < 10) {
-        favorisServices.createFavorite(name, userId, latitude, longitude)
+        favoriteServices.createFavorite(name, userId, latitude, longitude)
           .then(favorite=>res.send(favorite))
           .catch(err => res.status(401).send(err));
       } else {
@@ -29,8 +29,10 @@ router.post('/', (req, res) =>{
     })
     .catch(err => res.status(401).send(err));
 });
+
 // PUT
-router.put('/', (req, res) =>{
+router.put('/:id', (req, res) =>{
+  const id = req.params.id;
   const userId = req.user._id;
   const name = req.body.name;
   const latitude = req.body.latitude;
@@ -38,10 +40,10 @@ router.put('/', (req, res) =>{
   favoriteServices.getFavoritesByName(userId, name)
     .then( favorite =>{
       if (favorite != null) {
-        favoriteServices.updateFavorites(vehicleToUpdate)
+        favoriteServices.updateFavorites(id)
           .then(vehicle => {
             favoriteServices.updateFavorites(vehicle._id, {name, latitude, longitude})
-              .then(updatedVehicle=>res.send(updatedVehicle))
+              .then(updatedVehicle => res.send(updatedVehicle))
               .catch(err => res.status(401).send(err));
           })
           .catch(err => res.status(401).send(err));
@@ -52,12 +54,11 @@ router.put('/', (req, res) =>{
     .catch(err => res.status(401).send(err));
 });
 
-
 // DELETE
-router.delete('/:name', (req, res) => {
+router.delete('/:id', (req, res) => {
   const userId = req.user._id;
-  const name = req.params.name;
-  favoriteServices.getFavoritesByName(userId, name)
+  const id = req.params.id;
+  favoriteServices.getFavoriteById(id)
     .then(parking=>{
       if (parking !== null) {
         favoriteServices.deleteFavoriteParking(userId, name)

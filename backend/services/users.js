@@ -33,7 +33,7 @@ function createUser(email, password) {
 
 
 function updateUser(userId, information) {
-  return UserModel.update({email: information.email, password: information.password}).exec();
+  return UserModel.findByIdAndUpdate({email: information.email, password: information.password}, {new: true}).exec();
 }
 
 
