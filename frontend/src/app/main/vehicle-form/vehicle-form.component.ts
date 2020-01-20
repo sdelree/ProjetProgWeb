@@ -28,7 +28,8 @@ export class VehicleFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dialogRef.close(this.form.value);
+    const vehicle = this.vehicle ? {_id: this.vehicle._id, ...this.form.value} : this.form.value;
+    this.dialogRef.close(vehicle);
   }
 
 }

@@ -6,6 +6,8 @@ const path = require('path');
  * @typedef {{host: string, port: number, name: string, username: string, password: string}} DatabaseInfo
  */
 
+mongoose.set('useFindAndModify', false);
+
 /**
  * Connects to the MongoDB backend database.
  * @return {Promise<Mongoose>}

@@ -43,7 +43,7 @@ function createVehicle(userId, name, isElectric, height) {
 }
 
 function updateVehicle(vehicleId, update ) {
-  return VehicleModel.findByIdAndUpdate(vehicleId, update).exec();
+  return VehicleModel.findByIdAndUpdate(vehicleId, update, {new: true}).exec();
 }
 
 function deleteVehicle(vehicleId) {

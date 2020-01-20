@@ -59,9 +59,16 @@ export class VehicleService {
     let isPresent = false;
     this.getVehicles().pipe(
       take(1),
-      map(vehicles => vehicles.map(it => it._id === toUpdate._id ? (isPresent = true) && toUpdate : it)),
-      map(items => isPresent ? items : items.concat([toUpdate])),
-      tap(items => this.updates$.next(items))
+      map(vehicles => vehicles.map(vehicle => {
+        if (vehicle._id === toUpdate._id) {
+          isPresent = true;
+          console.log(toUpdate);
+          return toUpdate;
+        }
+        return vehicle;
+      })),
+      map(vehicle => isPresent ? vehicle : vehicle.concat([toUpdate])),
+      tap(vehicles => this.updates$.next(vehicles))
     ).subscribe();
   }
 
