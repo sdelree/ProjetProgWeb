@@ -17,7 +17,7 @@ const Vehicle = mongoose.Schema({
   },
   height: {
     type: Number,
-    required: 'Le Gabari du véhicule'
+    required: 'La hauteur du véhicule'
   }
 });
 
@@ -63,12 +63,7 @@ function updateVehicle(vehicleId, information ) {
 
 
 function deleteVehicle(vehicleId) {
-  return new Promise((resolve, reject) =>{
-    getVehiclesById(vehicleId)
-      .then(vehicle=> vehicle.remove(), err => {
-        resolve();
-      });
-  });
+  return VehicleModel.deleteOne({_id: vehicleId}).exec();
 }
 
 
