@@ -12,7 +12,7 @@ router.get('/:id', (req, res) => {
       if (vehicle.userId === userId) {
         res.send(vehicle);
       } else {
-        return Promise.reject('The connected user is not the vehicle\'s owner');
+        return Promise.reject(new Error('The connected user is not the vehicle\'s owner'));
       }
     })
     .catch(err => res.status(401).send(err));
@@ -60,12 +60,11 @@ router.get('/:vehicleName', (req, res) => {
       if (vehicle.userId === userId) {
         res.send(vehicle);
       } else {
-        return Promise.reject('The connected user is not the vehicle\'s owner');
+        return Promise.reject(new Error('The connected user is not the vehicle\'s owner'));
       }
     })
     .catch(err => res.status(401).send(err));
 });
-
 
 
 // UPDATE
@@ -81,7 +80,7 @@ router.put('/updateType/:vehicleId', (req, res) =>{
           .then(updatedVehicle => res.send(updatedVehicle))
           .catch(err => res.status(401).send(err));
       } else {
-        return Promise.reject('This vehicle doesn\'t exist');
+        return Promise.reject(new Error('This vehicle doesn\'t exist'));
       }
     })
     .catch(err => res.status(401).send(err));
@@ -96,7 +95,7 @@ router.delete('/delete/:vehicleId', (req, res) =>{
           .then(updatedVehicle => res.send(updatedVehicle))
           .catch(err => res.status(401).send(err));
       } else {
-        return Promise.reject('This vehicle doesn\'t exist');
+        return Promise.reject(new Error('This vehicle doesn\'t exist'));
       }
     })
     .catch(err => res.status(401).send(err));

@@ -68,11 +68,11 @@ function getFavoritesNumber(userId) {
 function deleteFavoriteParking(userId, name) {
   return new Promise((resolve, reject) =>{
     getFavoritesByUser(userId)
-        .then(favoriteParkings => {
-          favoriteParkings.remove({name}), err => {
-            resolve();
-          };
-        });
+      .then(favoriteParkings => {
+        favoriteParkings.remove({name}), err => {
+          resolve();
+        };
+      });
   });
 }
 

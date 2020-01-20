@@ -6,7 +6,7 @@ const userService = require('../services/users');
 const saltPasses = 10;
 
 router.post('/register', (req, res) => {
-  const {email, password, ..._} = req.body;
+  const {email, password} = req.body;
   bcrypt.hash(password, saltPasses)
     .then(hash => userService.createUser(email, hash))
     .then(user => res.send({email: user.email}))
@@ -14,7 +14,7 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  const {email, password, ..._} = req.body;
+  const {email, password} = req.body;
   userService.getUserByEmail(email)
     .then(user => {
       return bcrypt.compare(password, user.password)
@@ -23,7 +23,7 @@ router.post('/login', (req, res) => {
             req.session.userId = user._id;
             res.status(200).send({email: user.email});
           } else {
-            return Promise.reject('Wrong password');
+            return Promise.reject(new Error('Wrong password'));
           }
         });
     })

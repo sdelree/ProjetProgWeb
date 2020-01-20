@@ -65,9 +65,9 @@ function updateVehicle(vehicleId, information ) {
 function deleteVehicle(vehicleId) {
   return new Promise((resolve, reject) =>{
     getVehiclesById(vehicleId)
-        .then(vehicle=> vehicle.remove(), err => {
-          resolve();
-        });
+      .then(vehicle=> vehicle.remove(), err => {
+        resolve();
+      });
   });
 }
 

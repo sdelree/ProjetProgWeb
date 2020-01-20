@@ -16,20 +16,20 @@ function connect() {
     return new Promise((resolve, reject) => {
       mongoose.connect(envUrl,
         {useNewUrlParser: true, useUnifiedTopology: true},
-        (err) => err ? reject(err) : resolve(mongoose));
+        err => err ? reject(err) : resolve(mongoose));
     });
   }
   return getDatabaseInfo()
     .then(databaseInfo => {
       return new Promise(((resolve, reject) => {
         const url = databaseInfo.username ?
-          `mongodb://${databaseInfo.username}:${databaseInfo.password}@${databaseInfo.host}:${databaseInfo.port}/${databaseInfo.name}`
-          : `mongodb://${databaseInfo.host}:${databaseInfo.port}/${databaseInfo.name}`;
+          `mongodb://${databaseInfo.username}:${databaseInfo.password}@${databaseInfo.host}:${databaseInfo.port}/${databaseInfo.name}` :
+          `mongodb://${databaseInfo.host}:${databaseInfo.port}/${databaseInfo.name}`;
         mongoose.connect(url,
           {useNewUrlParser: true, useUnifiedTopology: true},
-          (err) => err ? reject(err) : resolve(mongoose));
+          err => err ? reject(err) : resolve(mongoose));
       }));
-  });
+    });
 }
 
 /**
@@ -47,12 +47,12 @@ function getMongoose() {
 function getDatabaseInfo() {
   return new Promise((resolve, reject) => {
     const envInfo = getDatabaseInfoFromEnv();
-    if(envInfo) {
+    if (envInfo) {
       resolve(envInfo);
     } else {
       getDatabaseInfoFromFile()
         .then(fileInfo => resolve(fileInfo))
-        .catch(reason => reject(`Unable to load database configuration : ${reason}`));
+        .catch(reason => reject(new Error(`Unable to load database configuration : ${reason}`)));
     }
   });
 }
@@ -100,7 +100,7 @@ function getInfoFromFile(fileName) {
   return new Promise((resolve, reject) => {
     fs.access(fileName, fs.constants.R_OK, err => {
       if (err) {
-        reject(`The file ${fileName} does not exist or is not readable`);
+        reject(new Error(`The file ${fileName} does not exist or is not readable`));
       } else {
         resolve(require(fileName));
       }
