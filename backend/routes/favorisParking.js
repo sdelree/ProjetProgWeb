@@ -71,3 +71,5 @@ router.delete('/delete/:name', (req, res) => {
                  })
                  .catch(err => res.status(401).send(err));
 });
+
+module.exports = router;
