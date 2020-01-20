@@ -15,20 +15,20 @@ const User = new mongoose.Schema({
 const UserModel = mongoose.model('User', User);
 
 function getUserById(userId) {
-  return UserModel.findById(userId).exec();
+  return UserModel.findById(userId).exec().then(user => user.toObject());
 }
 
 function getUserByEmail(email) {
-  return UserModel.findOne({email}).exec();
+  return UserModel.findOne({email}).exec().then(user => user.toObject());
 }
 
 function createUser(email, password) {
   return getUserByEmail(email)
-      .then(user => user == null ? Promise.resolve() : Promise.reject('User already esists'))
-      .then(_ => {
-        const newUser = new UserModel({email, password});
-        return newUser.save();
-      });
+    .then(user => user == null ? Promise.resolve() : Promise.reject(new Error('User already esists')))
+    .then(_ => {
+      const newUser = new UserModel({email, password});
+      return newUser.save().then(user => user.toObject());
+    });
 }
 
 
@@ -43,12 +43,12 @@ function updateUser(userId, information) {
 
 function deleteUserByEmail(email) {
   return getUserByEmail(email)
-      .then(user => user.remove);
+    .then(user => user.remove);
 }
 
 function deleteUserById(userId) {
   return getUserById(userId)
-      .then(user => user.remove);
+    .then(user => user.remove);
 }
 
 

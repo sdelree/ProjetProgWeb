@@ -8,7 +8,7 @@ const Vehicle = mongoose.Schema({
     required: 'Nom du véhicule'
   },
   userId: {
-    type: Number,
+    type: String,
     required: 'ID du propriétaire du véhicule'
   },
   isElectric: {
@@ -30,9 +30,9 @@ function getVehiclesByOwner(userId) {
     });
   });
 }
-function getVehiclesByName(userId, name) {
+function getVehicleByName(userId, name) {
   return new Promise((resolve, reject) => {
-    VehicleModel.find({userId, name}, (error, vehicles) => {
+    VehicleModel.findOne({userId, name}, (error, vehicles) => {
       resolve(vehicles);
     });
   });
@@ -50,11 +50,7 @@ function getVehiclesById(vehicleId) {
 
 function createVehicle(userId, name, isElectric, height) {
   const vehicle = new VehicleModel({userId, name, isElectric, height});
-  return new Promise((resolve, reject) =>{
-    vehicle.save(err => {
-      resolve();
-    });
-  });
+  return vehicle.save();
 }
 
 function updateVehicle(vehicleId, information ) {
@@ -82,5 +78,5 @@ module.exports = {
   createVehicle,
   updateVehicle,
   deleteVehicle,
-  getVehiclesByName
+  getVehicleByName
 };

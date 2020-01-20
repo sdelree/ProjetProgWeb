@@ -31,13 +31,6 @@ app.use(cors({
 
 app.use(authentication());
 
-app.use('/*', (req, res, next) => {
-  if (req.user) {
-    console.log(req.user);
-  }
-  next();
-});
-
 app.use('/', rootRouter);
 
 
