@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { catchError, delay, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 import { UserInfo } from './account.model';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 const registerURL = `${environment.backendUrl}/users/register`;
 const loginURL = `${environment.backendUrl}/users/login`;
 const logoutURL = `${environment.backendUrl}/users/logout`;
+const isLoggedInURL = `${environment.backendUrl}/users/isLoggedIn`;
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,13 @@ export class AccountService {
     );
   }
 
+  public checkCurrentToken(): Observable<UserInfo> {
+    return this.http.get<UserInfo>(isLoggedInURL).pipe(
+      tap((authenticationToken) => this.authenticationToken = authenticationToken),
+      tap(() => this.authStatusChange$.next())
+    )
+  }
+
   public logout(): Observable<void> {
     return this.http.post<void>(logoutURL, {}).pipe(
       tap(() => this.authenticationToken = null),
@@ -40,7 +48,7 @@ export class AccountService {
 
   public isAuthenticated(): Observable<boolean> {
     return this.authStatusChange$.pipe(
-      startWith(this.authenticationToken),
+      startWith(null),
       switchMap(() => of(!!this.authenticationToken))
     );
   }

@@ -35,7 +35,7 @@ router.post('/logout', (req, res) => {
 });
 
 router.get('/isLoggedIn', (req, res) => {
-  res.status(req.user ? 204 : 401);
+  res.status(req.user ? 200 : 401).send(req.user ? {email: req.user.email} : undefined);
 });
 
 module.exports = router;

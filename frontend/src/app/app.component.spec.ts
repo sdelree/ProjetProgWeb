@@ -2,9 +2,11 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { Component } from "@angular/core";
+import { AccountService } from "./account/account.service";
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
+    const accountSpy = jasmine.createSpyObj('AccountService', ['checkCurrentToken']);
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
@@ -13,6 +15,9 @@ describe('AppComponent', () => {
         AppComponent,
         HeaderStubComponent
       ],
+      providers: [
+        { provide: AccountService, useValue: accountSpy }
+      ]
     }).compileComponents();
   }));
 
