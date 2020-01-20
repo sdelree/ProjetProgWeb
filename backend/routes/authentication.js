@@ -34,4 +34,8 @@ router.post('/logout', (req, res) => {
   req.session.destroy(err => err ? res.status(500).send(err) : res.status(204).end());
 });
 
+router.get('/isLoggedIn', (req, res) => {
+  res.status(req.user ? 204 : 401);
+});
+
 module.exports = router;
