@@ -13,7 +13,7 @@ tags:
   - name: users
     description: Resource used to register, login and logout a user from the application.
   - name: favorites
-    description:: List of the 10 favorites parkings of the connected user
+    description: List of the up to 10 favorite parkings per user saved on the backend
 paths:
   /parkings:
     get:
@@ -238,12 +238,30 @@ paths:
           content: {}
 
   /favorites/:
+    get:
+      tags:
+        - favorites
+      summary: Get a list of the favorites of the currently authenticated user.
+      description: This route can be used to get a list of the favorite parkings of the logged in user.
+      operationId: getFavorites
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Favorite'
+        401:
+          description: The user is not logged in.
+          content: {}
     post:
       tags:
         - favorites
       summary: Add a parking to favorites.
       description: This route can be used to add a parking to the favorite parkings list of the connected user.
-      operationId: addFavorites
+      operationId: addFavorite
       responses:
         201:
           description: Successful operation
@@ -254,12 +272,20 @@ paths:
         409:
           description: There is already 10 favorite Parkings.
           content: {}
+  /favorites/{favoriteId}:
     put:
       tags:
         - favorites
       summary: Update a favorite parking.
-      description: This route can be used to update the information about one of favorite parkings of the connected user.
+      description: This route can be used to update the information about one of the favorite parkings of the connected user.
       operationId: updateFavorite
+      parameters:
+        - name: favoriteId
+          in: path
+          description: The id of the favorite to update.
+          required: true
+          schema:
+            $ref: '#/components/schemas/ResourceId'
       responses:
         200:
           description: Successful operation
@@ -267,8 +293,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Favorite'
+        401:
+          description: The user is not logged in.
+          content: {}
+        403:
+          description: The user can not access this favorite.
+          content: {}
         404:
-          description: This parking doesn't exist.
+          description: This favorite doesn't exist.
           content: {}
 
     delete:
@@ -277,12 +309,25 @@ paths:
       summary: Delete a favorite parking.
       description: This route can be used to delete one of favorite parkings of the connected user.
       operationId: deleteFavorite
+      parameters:
+        - name: favoriteId
+          in: path
+          description: The id of the favorite to delete.
+          required: true
+          schema:
+            $ref: '#/components/schemas/ResourceId'
       responses:
         204:
           description: Successful operation
           content: {}
+        401:
+          description: The user is not logged in.
+          content: {}
+        403:
+          description: The user can not access this favorite.
+          content: {}
         404:
-          description: This parking doesn't exist.
+          description: This favorite doesn't exist.
           content: {}
 
 components:
@@ -363,16 +408,13 @@ components:
           $ref: '#/components/schemas/ResourceId'
         name:
           type: string
-        userId:
-          type: number
         isElectic:
           type: boolean
         height:
           type: number
           format: float
     ResourceId:
-      type: integer
-      format: int64
+      type: string
     UserCredentials:
       type: object
       properties:
@@ -391,10 +433,10 @@ components:
     Favorite:
       type: object
       properties:
+        id:
+          $ref: '#/components/schemas/ResourceId'
         name:
           type: string
-        userId:
-          type: number
         latitude:
           type: number
           format: float
@@ -407,7 +449,3 @@ components:
       type: apiKey
       in: cookie
       name: SessionID
-
-
-
-
