@@ -4,6 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyparser = require('body-parser');
 const session = require('express-session');
+const authentication = require('./middlewares/authentication');
 const database = require('./database/connection');
 const rootRouter = require('./routes/index');
 const app = express();
@@ -27,6 +28,15 @@ app.use(cors({
   origin: true,
   credentials: true
 }));
+
+app.use(authentication());
+
+app.use('/*', (req, res, next) => {
+  if (req.user) {
+    console.log(req.user);
+  }
+  next();
+});
 
 app.use('/', rootRouter);
 

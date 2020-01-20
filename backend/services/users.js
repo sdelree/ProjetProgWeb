@@ -15,7 +15,7 @@ const User = new mongoose.Schema({
 const UserModel = mongoose.model('User', User);
 
 function getUserById(userId) {
-  return UserModel.findOne({_id: userId}).exec();
+  return UserModel.findById(userId).exec();
 }
 
 function getUserByEmail(email) {
