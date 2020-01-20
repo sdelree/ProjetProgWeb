@@ -4,7 +4,7 @@ info:
   description: 'The REST API that enables the WhereToPark frontend and backend apps to communicate.'
   version: 0.1.0
 security:
-  - sessionAuth: []
+  - jwtInCookie: []
 tags:
   - name: parkings
     description: Information about Bordeaux\'s parkings
@@ -219,7 +219,7 @@ paths:
             Set-Cookie:
               schema:
                 type: string
-                example: SessionId=abcde12345; Path=/; HttpOnly
+                example: Token=ab.cde123.45; Path=/; HttpOnly
         401:
           description: Bad credentials.
           content: {}
@@ -233,6 +233,18 @@ paths:
       responses:
         204:
           description: Successful operation
+  /users/isLoggedIn:
+    post:
+      tags:
+        - users
+      summary: Check that a user is logged in.
+      description: This route can be used to check that a useris logged in. Can be used to check access token validity.
+      operationId: checkLogin
+      responses:
+        204:
+          description: Successful operation
+        401:
+          description: The user is not logged in.
 
   /favorites/:
     get:
@@ -442,11 +454,7 @@ components:
           format: float
 
   securitySchemes:
-    sessionAuth:
+    jwtInCookie:
       type: apiKey
       in: cookie
-      name: SessionID
-
-
-
-
+      name: JWTToken
