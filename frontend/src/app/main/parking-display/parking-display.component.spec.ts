@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ParkingDisplayComponent } from './parking-display.component';
-import { MatExpansionModule } from '@angular/material';
+import { MatExpansionModule, MatTabsModule } from '@angular/material';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ParkingDisplayComponent', () => {
   let component: ParkingDisplayComponent;
@@ -10,7 +11,7 @@ describe('ParkingDisplayComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ParkingDisplayComponent ],
-      imports: [ MatExpansionModule ]
+      imports: [ NoopAnimationsModule, MatExpansionModule, MatTabsModule ]
     })
     .compileComponents();
   }));

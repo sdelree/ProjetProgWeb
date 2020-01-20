@@ -7,20 +7,32 @@
       </mat-panel-title>
       <mat-panel-description>
         <ng-container *ngIf="parking.freePlaces;else unknownPlaces">{{parking.freePlaces}} places restantes</ng-container>
-        <ng-template #unknownPlaces>Ya pas trop d'info</ng-template>
+        <ng-template #unknownPlaces>Pas d'information</ng-template>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <h3>Les tarifs :</h3>
-    <ul class="prices">
-      <li>15 minutes : {{parking.prices.fifteenMinutes|currency:'EUR'}}</li>
-      <li>30 minutes : {{parking.prices.halfAnHour|currency:'EUR'}}</li>
-      <li>1 heure : {{parking.prices.oneHour|currency:'EUR'}}</li>
-      <li>2 heures : {{parking.prices.twoHours|currency:'EUR'}}</li>
-      <li>3 heures : {{parking.prices.threeHours|currency:'EUR'}}</li>
-      <li>4 heures : {{parking.prices.fourHours|currency:'EUR'}}</li>
-      <li>10 heures : {{parking.prices.tenHours|currency:'EUR'}}</li>
-      <li>24 heures : {{parking.prices.twentyFourHours|currency:'EUR'}}</li>
-      <li *ngIf="parking.prices.night">Nuit : {{parking.prices.night|currency:'EUR'}}</li>
-    </ul>
+    <mat-tab-group>
+      <mat-tab label="Tarifs">
+        <ul class="prices">
+
+          <li>15 minutes : {{parking.prices.fifteenMinutes|currency:'EUR'}}</li>
+          <li>30 minutes : {{parking.prices.halfAnHour|currency:'EUR'}}</li>
+          <li>1 heure : {{parking.prices.oneHour|currency:'EUR'}}</li>
+          <li>2 heures : {{parking.prices.twoHours|currency:'EUR'}}</li>
+          <li>3 heures : {{parking.prices.threeHours|currency:'EUR'}}</li>
+          <li>4 heures : {{parking.prices.fourHours|currency:'EUR'}}</li>
+          <li>10 heures : {{parking.prices.tenHours|currency:'EUR'}}</li>
+          <li>24 heures : {{parking.prices.twentyFourHours|currency:'EUR'}}</li>
+          <li *ngIf="parking.prices.night">Nuit : {{parking.prices.night|currency:'EUR'}}</li>
+        </ul>
+      </mat-tab>
+
+      <mat-tab label="information">
+        <ul class="information">
+          <li>Places pour véhicules électriques : {{parking.places.electric}} </li>
+          <li>Hauteur maximale : {{parking.maxVehicleHeight|number}} m </li>
+        </ul>
+      </mat-tab>
+    </mat-tab-group>
+
   </mat-expansion-panel>
 </mat-accordion>
