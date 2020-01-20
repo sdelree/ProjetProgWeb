@@ -3,7 +3,7 @@ const database = require('../database/connection');
 const mongoose = database.getMongoose();
 
 const Vehicle = mongoose.Schema({
-  name:{
+  name: {
     type: String,
     required: 'Nom du véhicule'
   },
@@ -57,23 +57,22 @@ function createVehicle(userId, name, isElectric, height) {
   });
 }
 
-function updateVehicle(vehicleId, information ){
+function updateVehicle(vehicleId, information ) {
   return new Promise((resolve, reject)=>{
-    this.update({isElectric: information.isElectric, height: information.height},(error, vehicles)=>{
+    this.update({isElectric: information.isElectric, height: information.height}, (error, vehicles)=>{
       resolve(vehicles);
     });
   });
 }
 
 
-
 function deleteVehicle(vehicleId) {
   return new Promise((resolve, reject) =>{
     getVehiclesById(vehicleId)
-         .then(vehicle=> vehicle.remove(), err => {
-                   resolve();
-         });
-    });
+        .then(vehicle=> vehicle.remove(), err => {
+          resolve();
+        });
+  });
 }
 
 

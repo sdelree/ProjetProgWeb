@@ -24,11 +24,11 @@ function getUserByEmail(email) {
 
 function createUser(email, password) {
   return getUserByEmail(email)
-    .then(user => user == null ? Promise.resolve() : Promise.reject('User already esists'))
-    .then(_ => {
-      const newUser = new UserModel({email, password});
-      return newUser.save();
-    });
+      .then(user => user == null ? Promise.resolve() : Promise.reject('User already esists'))
+      .then(_ => {
+        const newUser = new UserModel({email, password});
+        return newUser.save();
+      });
 }
 
 
@@ -38,7 +38,6 @@ function updateUser(userId, information) {
       resolve(user);
     });
   });
-
 }
 
 
@@ -49,7 +48,7 @@ function deleteUserByEmail(email) {
 
 function deleteUserById(userId) {
   return getUserById(userId)
-     .then(user => user.remove);
+      .then(user => user.remove);
 }
 
 

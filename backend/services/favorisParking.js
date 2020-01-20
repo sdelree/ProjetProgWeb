@@ -24,14 +24,14 @@ const Favoris = mongoose.Schema({
 const favorisModel = mongoose.model('parking', Favoris);
 
 function getFavoritesByUser(userId) {
-  return new promise((resolbe, reject) =>{
+  return new Promise((resolbe, reject) =>{
     favorisModel.find( {userId}, (error, favoris)=>{
       resolve(favoris);
     });
   });
 }
 function getFavoritesByName(userIdn, name) {
-  return new promise((resolbe, reject) =>{
+  return new Promise((resolbe, reject) =>{
     favorisModel.find( {userIdn, name}, (error, favoris)=>{
       resolve(favoris);
     });
@@ -48,17 +48,17 @@ function createFavoris(name, userId, latitude, longitude) {
 }
 
 function updateFavorites(userId, information) {
-    return new Promise((resolve, reject)=>{
-      this.update({name : information.name, userId,
-                   latitude : information.latitude,
-                   longitude : information.longitude}, (error, vehicles)=>{
-                                                             resolve(vehicles);
-                                                        });
+  return new Promise((resolve, reject)=>{
+    this.update({name: information.name, userId,
+      latitude: information.latitude,
+      longitude: information.longitude}, (error, vehicles)=>{
+      resolve(vehicles);
     });
+  });
 }
 
 function getFavoritesNumber(userId) {
-  return new promise((resolbe, reject) =>{
+  return new Promise((resolbe, reject) =>{
     favorisModel.find( {userId}, (error, favoris)=>{
       resolve(favoris);
     }).size();
@@ -68,11 +68,11 @@ function getFavoritesNumber(userId) {
 function deleteFavoriteParking(userId, name) {
   return new Promise((resolve, reject) =>{
     getFavoritesByUser(userId)
-      .then(favoriteParkings => {
-                          favoriteParkings.remove({name}), err => {
-                                    resolve();
-                          }
-      });
+        .then(favoriteParkings => {
+          favoriteParkings.remove({name}), err => {
+            resolve();
+          };
+        });
   });
 }
 
