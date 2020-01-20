@@ -209,7 +209,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UserCredentials'
       responses:
-        201:
+        200:
           description: Successful operation
           content:
             application/json:
@@ -233,9 +233,6 @@ paths:
       responses:
         204:
           description: Successful operation
-        401:
-          description: Bad credentials.
-          content: {}
 
   /favorites/:
     get:
@@ -449,3 +446,7 @@ components:
       type: apiKey
       in: cookie
       name: SessionID
+
+
+
+
