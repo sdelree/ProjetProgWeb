@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ParkingDisplayComponent } from './parking-display.component';
+import { MatExpansionModule } from '@angular/material';
 
 describe('ParkingDisplayComponent', () => {
   let component: ParkingDisplayComponent;
@@ -8,7 +9,8 @@ describe('ParkingDisplayComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ParkingDisplayComponent ]
+      declarations: [ ParkingDisplayComponent ],
+      imports: [ MatExpansionModule ]
     })
     .compileComponents();
   }));
