@@ -24,7 +24,7 @@ function getUserByEmail(email) {
 
 function createUser(email, password) {
   return getUserByEmail(email)
-    .then(user => user == null ? Promise.resolve() : Promise.reject(new Error('User already esists')))
+    .then(user => user == null ? Promise.resolve() : Promise.reject(new Error('User already exists')))
     .then(_ => {
       const newUser = new UserModel({email, password});
       return newUser.save().then(user => user.toObject());
@@ -33,22 +33,16 @@ function createUser(email, password) {
 
 
 function updateUser(userId, information) {
-  return new Promise((resolve, reject) => {
-    UserModel.update({email: information.email, password: information.password}, (error, user) => {
-      resolve(user);
-    });
-  });
+  return UserModel.findByIdAndUpdate({email: information.email, password: information.password}, {new: true}).exec();
 }
 
 
 function deleteUserByEmail(email) {
-  return getUserByEmail(email)
-    .then(user => user.remove);
+  return UserModel.deleteOne({email}).exec();
 }
 
 function deleteUserById(userId) {
-  return getUserById(userId)
-    .then(user => user.remove);
+  return UserModel.deleteOne({userId}).exec();
 }
 
 
