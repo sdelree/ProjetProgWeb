@@ -10,8 +10,8 @@ function authenticationMiddleware(req, res, next) {
     userService.getUserById(req.session.userId)
       .then(user => {
         if (user) {
-          const {password, ...user} = user;
-          req.user = user;
+          const {password, ...loggedInUser} = user;
+          req.user = loggedInUser;
         }
         next();
       });

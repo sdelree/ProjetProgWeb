@@ -4,7 +4,7 @@
       <mat-card id="control-panel" class="h-100 mat-elevation-z5">
         <app-search-bar class="mb-4 w-100" (search)="onSearch($event)" (inputChange)="onAutoComplete($event)"
         [autoCompleteAddresses]="autoComplete$ | async"></app-search-bar>
-        <app-vehicle-selection class="w-100"></app-vehicle-selection>
+        <app-vehicle-selection *ngIf="isAuthenticated() | async" class="w-100"></app-vehicle-selection>
         <app-parking-display [parkings]="parkings"></app-parking-display>
       </mat-card>
     </div>
